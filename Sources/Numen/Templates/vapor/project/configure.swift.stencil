@@ -27,7 +27,7 @@ public func configure(_ app: Application) async throws {
             port: Int(Environment.get("DB_PORT") ?? "5432") ?? 5432,
             username: Environment.get("DB_USER") ?? "vapor",
             password: Environment.get("DB_PASSWORD") ?? "vapor",
-            database: Environment.get("DB_NAME") ?? "{{ projectName }}"
+            database: Environment.get("DB_NAME") ?? "{{ projectNameLower }}"
         )),
         as: .psql
     )
@@ -39,7 +39,7 @@ public func configure(_ app: Application) async throws {
             port: Int(Environment.get("DB_PORT") ?? "3306") ?? 3306,
             username: Environment.get("DB_USER") ?? "vapor",
             password: Environment.get("DB_PASSWORD") ?? "vapor",
-            database: Environment.get("DB_NAME") ?? "{{ projectName }}"
+            database: Environment.get("DB_NAME") ?? "{{ projectNameLower }}"
         ),
         as: .mysql
     )

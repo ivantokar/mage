@@ -36,12 +36,11 @@ struct ValueObjectCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let voName = name.applying(caseStyle: config.naming.caseStyle)
-        print("🔮 Generating value object: \(voName.cyan.bold)")
+        print("🔮 Generating value object: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: voName,
+            name: name,
             fields: parsedFields,
             outputPath: output,
             dryRun: dryRun

@@ -32,12 +32,11 @@ struct ServiceCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let serviceName = name.applying(caseStyle: config.naming.caseStyle)
-        print("🔮 Generating service: \(serviceName.cyan.bold)")
+        print("🔮 Generating service: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: serviceName,
+            name: name,
             outputPath: output,
             dryRun: dryRun
         )

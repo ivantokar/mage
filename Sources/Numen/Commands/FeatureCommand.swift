@@ -51,10 +51,9 @@ struct FeatureCommand: ParsableCommand {
         }
 
         let parsedFields = Field.parseFields(fields)
-        let featureName = name.applying(caseStyle: config.naming.caseStyle)
 
         if !dryRun {
-            print("🎨 Creating complete DDD feature: \(featureName.magenta.bold)")
+            print("🎨 Creating complete DDD feature: \(name.magenta.bold)")
             if !parsedFields.isEmpty {
                 print("   Fields: \(parsedFields.map(\.name).joined(separator: ", "))")
             }
@@ -65,7 +64,7 @@ struct FeatureCommand: ParsableCommand {
         }
 
         let context = FeatureContext(
-            name: featureName,
+            name: name,
             fields: parsedFields,
             outputPath: output,
             dryRun: dryRun,
@@ -79,9 +78,9 @@ struct FeatureCommand: ParsableCommand {
             print()
             print("Next steps:".bold)
             print("  1. Register the migration in configure.swift:")
-            print("     app.migrations.add(Create\(featureName)())")
+            print("     app.migrations.add(Create\(name)())")
             print("  2. Register routes in routes.swift:")
-            print("     try app.register(collection: \(featureName)Controller())")
+            print("     try app.register(collection: \(name)Controller())")
             print()
         }
     }

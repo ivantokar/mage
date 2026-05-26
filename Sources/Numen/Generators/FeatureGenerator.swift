@@ -35,66 +35,71 @@ class FeatureGenerator {
 
         if !context.shouldSkip(.entity) {
             print("   Generating entity...".dim)
-            try entityGenerator.generate(context: context.entityContext())
-            generatedCount += 1
+            generatedCount += attempt { try self.entityGenerator.generate(context: context.entityContext()) }
             print()
         }
 
         if !context.shouldSkip(.dto) {
             print("   Generating DTO...".dim)
-            try dtoGenerator.generate(context: context.dtoContext())
-            generatedCount += 1
+            generatedCount += attempt { try self.dtoGenerator.generate(context: context.dtoContext()) }
             print()
         }
 
         if !context.shouldSkip(.repository) {
             print("   Generating repository...".dim)
-            try repositoryGenerator.generate(context: context.repositoryContext())
-            generatedCount += 2
+            generatedCount += attempt(count: 2) { try self.repositoryGenerator.generate(context: context.repositoryContext()) }
             print()
         }
 
         if !context.shouldSkip(.usecases) {
             print("   Generating CRUD use cases...".dim)
-            try crudUseCasesGenerator.generate(
-                context: context.useCaseContext(),
-                entityName: context.entityName,
-                repositoryName: context.repositoryName,
-                dtoName: context.dtoName
-            )
-            generatedCount += 5
+            generatedCount += attempt(count: 5) {
+                try self.crudUseCasesGenerator.generate(
+                    context: context.useCaseContext(),
+                    entityName: context.entityName,
+                    repositoryName: context.repositoryName,
+                    dtoName: context.dtoName
+                )
+            }
             print()
         }
 
         if !context.shouldSkip(.controller) {
             print("   Generating controller...".dim)
-            try controllerGenerator.generate(
-                context: context.controllerContext(),
-                entityName: context.entityName
-            )
-            generatedCount += 1
+            generatedCount += attempt { try self.controllerGenerator.generate(context: context.controllerContext(), entityName: context.entityName) }
             print()
         }
 
         if !context.shouldSkip(.routes) {
             print("   Generating routes...".dim)
-            try routeGenerator.generate(
-                context: context.routeContext(),
-                entityName: context.entityName,
-                controllerName: context.controllerName
-            )
-            generatedCount += 1
+            generatedCount += attempt {
+                try self.routeGenerator.generate(context: context.routeContext(), entityName: context.entityName, controllerName: context.controllerName)
+            }
             print()
         }
 
         if !context.shouldSkip(.migration) {
             print("   Generating migration...".dim)
-            try migrationGenerator.generate(context: context.migrationContext())
-            generatedCount += 1
+            generatedCount += attempt { try self.migrationGenerator.generate(context: context.migrationContext()) }
             print()
         }
 
         print("✅ Feature '\(context.name)' generated successfully!".green.bold)
         print("   Created \(generatedCount) file(s)".dim)
+    }
+
+    @discardableResult
+    private func attempt(count: Int = 1, block: () throws -> Void) -> Int {
+        do {
+            try block()
+            return count
+        } catch GeneratorError.fileAlreadyExists(let path) {
+            let rel = path.replacingOccurrences(of: FileManager.default.currentDirectoryPath + "/", with: "")
+            print("  ⚠️  Skipped (already exists): \(rel)".yellow)
+            return 0
+        } catch {
+            print("  ❌ \(error.localizedDescription)".red)
+            return 0
+        }
     }
 }

@@ -1,7 +1,7 @@
 import Foundation
 import Stencil
 import PathKit
-import MageStencilKit
+import SwiftStencilKit
 
 enum TemplateError: Error, LocalizedError {
     case templateNotFound(String)
@@ -24,7 +24,7 @@ class TemplateEngine {
         let basePath = templatesPath ?? Self.findTemplatesDirectory()
         let loader = FileSystemLoader(paths: [Path(basePath)])
         self.environment = Environment(loader: loader)
-        MageStencilFilters.register(on: self.environment)
+        SwiftStencilFilters.register(on: self.environment)
     }
 
     private static func findTemplatesDirectory() -> String {

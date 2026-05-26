@@ -9,7 +9,7 @@ let package = Package(
         .package(url: "https://github.com/stencilproject/Stencil", from: "0.15.0"),
         .package(url: "https://github.com/jpsim/Yams", from: "5.0.0"),
         .package(url: "https://github.com/ivantokar/prompt.git", from: "1.0.0"),
-        .package(url: "https://github.com/ivantokar/swift-stencil-kit.git", from: "1.0.0"),
+        .package(url: "https://github.com/ivantokar/swift-stencil-kit.git", from: "2.0.1"),
     ],
     targets: [
         .executableTarget(
@@ -19,7 +19,7 @@ let package = Package(
                 .product(name: "Stencil", package: "Stencil"),
                 .product(name: "Yams", package: "Yams"),
                 .product(name: "Prompt", package: "prompt"),
-                .product(name: "MageStencilKit", package: "swift-stencil-kit"),
+                .product(name: "SwiftStencilKit", package: "swift-stencil-kit"),
             ],
             path: "Sources/Numen",
             resources: [

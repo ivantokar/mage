@@ -1,6 +1,6 @@
 import Foundation
 
-struct {{ name }}: DomainEvent {
+struct {{ name }}: DomainEvent, Sendable {
     let occurredAt: Date
 {% for field in fields %}
     let {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}

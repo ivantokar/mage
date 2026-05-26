@@ -39,12 +39,11 @@ struct DTOCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let dtoName = name.applying(caseStyle: config.naming.caseStyle)
-        print("🔮 Generating DTO: \(dtoName.cyan.bold)")
+        print("🔮 Generating DTO: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: dtoName,
+            name: name,
             fields: parsedFields,
             entity: entity,
             outputPath: output,

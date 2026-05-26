@@ -39,14 +39,13 @@ struct EntityCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let entityName = name.applying(caseStyle: config.naming.caseStyle)
-        print("🔮 Generating entity: \(entityName.cyan.bold)")
+        print("🔮 Generating entity: \(name.cyan.bold)")
         if let aggregate { print("   Aggregate: \(aggregate.yellow)") }
         if !parsedFields.isEmpty { print("   Fields: \(parsedFields.count)") }
         print()
 
         let context = GenerationContext(
-            name: entityName,
+            name: name,
             fields: parsedFields,
             aggregate: aggregate,
             outputPath: output,
@@ -59,8 +58,8 @@ struct EntityCommand: ParsableCommand {
         if !dryRun {
             print()
             print("Next steps:".bold)
-            print("  numen migration Create\(entityName) --entity \(entityName)")
-            print("  numen repository \(entityName)Repository --entity \(entityName)")
+            print("  numen migration Create\(name) --entity \(name)")
+            print("  numen repository \(name)Repository --entity \(name)")
             print()
         }
     }

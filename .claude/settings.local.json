@@ -8,7 +8,12 @@
       "Bash(mkdir -p /Users/ivantokar/Work/numen/Sources/Numen/Core/Utilities)",
       "Bash(swift build *)",
       "Bash(git rm *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Read(//private/tmp/numen-test-project/**)",
+      "Bash(/Users/ivantokar/Work/numen/.build/debug/Numen feature *)",
+      "Bash(git reset *)",
+      "Bash(git commit -m ' *)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

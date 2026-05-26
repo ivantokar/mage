@@ -35,14 +35,13 @@ struct ControllerCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let controllerName = name.applying(caseStyle: config.naming.caseStyle)
-        let resolvedEntity = entity ?? controllerName.replacingOccurrences(of: "Controller", with: "")
+        let resolvedEntity = entity ?? name.replacingOccurrences(of: "Controller", with: "")
 
-        print("🔮 Generating controller: \(controllerName.cyan.bold)")
+        print("🔮 Generating controller: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: controllerName,
+            name: name,
             entity: resolvedEntity,
             outputPath: output,
             dryRun: dryRun

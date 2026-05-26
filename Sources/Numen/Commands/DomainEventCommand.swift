@@ -39,12 +39,11 @@ struct DomainEventCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let eventName = name.applying(caseStyle: config.naming.caseStyle)
-        print("🔮 Generating domain event: \(eventName.cyan.bold)")
+        print("🔮 Generating domain event: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: eventName,
+            name: name,
             fields: parsedFields,
             aggregate: aggregate,
             outputPath: output,

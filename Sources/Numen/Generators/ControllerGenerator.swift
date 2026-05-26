@@ -35,6 +35,8 @@ class ControllerGenerator {
         let templateContext: [String: Any] = [
             "name": context.name,
             "entityName": resolvedEntityName,
+            "fields": context.fields.map { $0.toDictionary() },
+            "hasFields": !context.fields.isEmpty,
         ]
 
         let content = try templateEngine.render(

@@ -1,4 +1,5 @@
 import Vapor
+import Fluent
 
 protocol {{ name }}: Sendable {
     func findById(_ id: UUID, on db: Database) async throws -> {{ entityName }}?

@@ -36,12 +36,11 @@ struct AggregateRootCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let arName = name.applying(caseStyle: config.naming.caseStyle)
-        print("🔮 Generating aggregate root: \(arName.cyan.bold)")
+        print("🔮 Generating aggregate root: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: arName,
+            name: name,
             fields: parsedFields,
             outputPath: output,
             dryRun: dryRun

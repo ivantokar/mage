@@ -1,5 +1,5 @@
 import Foundation
-import MageStencilKit
+import SwiftStencilKit
 
 extension String {
     func applying(caseStyle: NumenConfig.NamingConfig.CaseStyle) -> String {

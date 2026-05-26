@@ -30,7 +30,8 @@ class PathResolver {
             layerPath = config.paths.sources
         }
 
-        return "\(basePath)/\(layerPath)/\(componentType.directory)"
+        let dir = componentType.directory
+        return dir.isEmpty ? "\(basePath)/\(layerPath)" : "\(basePath)/\(layerPath)/\(dir)"
     }
 
     func ensureDirectoryExists(at path: String) throws {

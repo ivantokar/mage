@@ -2,9 +2,9 @@ import Vapor
 import Fluent
 
 struct {{ name }} {
-    let repository: {{ repositoryName }}Protocol
+    let repository: {{ repositoryName }}
 
-    init(repository: {{ repositoryName }}Protocol) {
+    init(repository: {{ repositoryName }}) {
         self.repository = repository
     }
 

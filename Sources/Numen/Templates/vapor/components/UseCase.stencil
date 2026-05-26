@@ -1,4 +1,5 @@
 import Vapor
+import Fluent
 
 protocol {{ name }}Protocol {
     associatedtype Input

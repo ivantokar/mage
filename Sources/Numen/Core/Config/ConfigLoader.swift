@@ -1,6 +1,5 @@
 import Foundation
 import Yams
-import Prompt
 
 enum ConfigError: Error, LocalizedError {
     case fileNotFound(String)

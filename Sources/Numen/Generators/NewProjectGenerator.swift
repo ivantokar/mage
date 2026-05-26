@@ -48,6 +48,7 @@ class NewProjectGenerator {
         let resolvedAuthor = author ?? GitConfig.getUserName() ?? ""
         let context: [String: Any] = [
             "projectName": projectName,
+            "projectNameLower": projectName.lowercased(),
             "author": resolvedAuthor,
             "company": company ?? "",
             "license": license ?? "MIT",

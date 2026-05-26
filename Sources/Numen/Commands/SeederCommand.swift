@@ -35,14 +35,13 @@ struct SeederCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let seederName = name.applying(caseStyle: config.naming.caseStyle)
-        let resolvedEntity = entity ?? seederName.replacingOccurrences(of: "Seeder", with: "")
+        let resolvedEntity = entity ?? name.replacingOccurrences(of: "Seeder", with: "")
 
-        print("🔮 Generating seeder: \(seederName.cyan.bold)")
+        print("🔮 Generating seeder: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: seederName,
+            name: name,
             entity: resolvedEntity,
             outputPath: output,
             dryRun: dryRun

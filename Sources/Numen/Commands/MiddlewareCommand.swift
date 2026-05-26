@@ -32,12 +32,11 @@ struct MiddlewareCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let middlewareName = name.applying(caseStyle: config.naming.caseStyle)
-        print("🔮 Generating middleware: \(middlewareName.cyan.bold)")
+        print("🔮 Generating middleware: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: middlewareName,
+            name: name,
             outputPath: output,
             dryRun: dryRun
         )

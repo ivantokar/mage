@@ -35,21 +35,20 @@ struct RouteCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let routeName = name.applying(caseStyle: config.naming.caseStyle)
-        let resolvedController = controller ?? "\(routeName)Controller"
+        let resolvedController = controller ?? "\(name)Controller"
 
-        print("🔮 Generating route: \(routeName.cyan.bold)")
+        print("🔮 Generating route: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: routeName,
+            name: name,
             useCase: resolvedController,
             outputPath: output,
             dryRun: dryRun
         )
 
         let generator = try RouteGenerator(config: config)
-        try generator.generate(context: context, entityName: routeName, controllerName: resolvedController)
+        try generator.generate(context: context, entityName: name, controllerName: resolvedController)
     }
 
     private func isValidName(_ name: String) -> Bool {

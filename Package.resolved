@@ -1,5 +1,5 @@
 {
-  "originHash" : "b0d100d7c2d8ca51f607dd0e63bcbbda235559a7836e6364f778105ecff3524b",
+  "originHash" : "825dd2928ec9a4960cffd633e1fb67a28410185f0fd34511a2a5d0a295291c60",
   "pins" : [
     {
       "identity" : "pathkit",
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ivantokar/swift-stencil-kit.git",
       "state" : {
-        "revision" : "ea81cd1866f7996f313ff67bfe981e33ff2b5056",
-        "version" : "1.2.0"
+        "revision" : "7d66871f663d5bf80de2e73c5544502cbe5edc18",
+        "version" : "2.0.1"
       }
     },
     {

@@ -39,12 +39,11 @@ struct UseCaseCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let useCaseName = name.applying(caseStyle: config.naming.caseStyle)
-        print("🔮 Generating use case: \(useCaseName.cyan.bold)")
+        print("🔮 Generating use case: \(name.cyan.bold)")
         print()
 
         let context = GenerationContext(
-            name: useCaseName,
+            name: name,
             fields: parsedFields,
             entity: entity,
             outputPath: output,

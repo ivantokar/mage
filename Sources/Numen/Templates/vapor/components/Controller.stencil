@@ -20,7 +20,12 @@ struct {{ name }}: RouteCollection {
     func create(req: Request) async throws -> {{ entityName }} {
         try {{ entityName }}DTO.Create.validate(content: req)
         let input = try req.content.decode({{ entityName }}DTO.Create.self)
-        let model = {{ entityName }}({% if entityName %}{% endif %})
+        let model = {{ entityName }}(
+{% for field in fields %}
+            {{ field.name }}: input.{{ field.name }}{% if not forloop.last %},{% endif %}
+
+{% endfor %}
+        )
         try await model.save(on: req.db)
         return model
     }
@@ -43,7 +48,9 @@ struct {{ name }}: RouteCollection {
             throw Abort(.notFound)
         }
         let input = try req.content.decode({{ entityName }}DTO.Update.self)
-        // Apply updates from input
+{% for field in fields %}
+        if let {{ field.name }} = input.{{ field.name }} { model.{{ field.name }} = {{ field.name }} }
+{% endfor %}
         try await model.save(on: req.db)
         return model
     }

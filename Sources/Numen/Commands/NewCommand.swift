@@ -38,7 +38,7 @@ struct NewCommand: ParsableCommand {
 
         guard isValidProjectName(projectName) else {
             print("❌ Invalid project name: '\(projectName)'".red)
-            print("   Project names must contain only lowercase letters, numbers, and hyphens")
+            print("   Project names must start with a letter and contain only letters, numbers, and hyphens")
             throw ExitCode.failure
         }
 
@@ -122,7 +122,7 @@ struct NewCommand: ParsableCommand {
     }
 
     private func isValidProjectName(_ name: String) -> Bool {
-        let pattern = "^[a-z0-9][a-z0-9-]*[a-z0-9]$|^[a-z0-9]$"
+        let pattern = "^[A-Za-z][A-Za-z0-9-]*$"
         guard let regex = try? NSRegularExpression(pattern: pattern) else { return false }
         let range = NSRange(location: 0, length: name.utf16.count)
         return regex.firstMatch(in: name, range: range) != nil

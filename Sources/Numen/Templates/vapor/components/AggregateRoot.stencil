@@ -1,7 +1,5 @@
 import Foundation
 
-protocol DomainEvent {}
-
 final class {{ name }} {
     let id: UUID
 {% for field in fields %}

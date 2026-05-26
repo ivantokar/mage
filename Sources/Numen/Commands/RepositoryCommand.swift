@@ -39,15 +39,14 @@ struct RepositoryCommand: ParsableCommand {
             throw ExitCode.failure
         }
 
-        let repoName = name.applying(caseStyle: config.naming.caseStyle)
-        let resolvedEntity = entity ?? repoName.replacingOccurrences(of: "Repository", with: "")
+        let resolvedEntity = entity ?? name.replacingOccurrences(of: "Repository", with: "")
 
-        print("🔮 Generating repository: \(repoName.cyan.bold)")
+        print("🔮 Generating repository: \(name.cyan.bold)")
         print("   Entity: \(resolvedEntity.yellow)")
         print()
 
         let context = GenerationContext(
-            name: repoName,
+            name: name,
             fields: parsedFields,
             entity: resolvedEntity,
             outputPath: output,
@@ -60,7 +59,7 @@ struct RepositoryCommand: ParsableCommand {
         if !dryRun {
             print()
             print("Next steps:".bold)
-            print("  Register FluentUserRepository in your configure.swift or service container")
+            print("  Register Fluent\(name) in your configure.swift or service container")
             print()
         }
     }

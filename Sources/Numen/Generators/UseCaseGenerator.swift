@@ -1,5 +1,6 @@
 import Foundation
 import Prompt
+import SwiftStencilKit
 
 class UseCaseGenerator {
     private let config: NumenConfig
@@ -66,7 +67,7 @@ class CRUDUseCasesGenerator {
         let operations: [(name: String, template: String)] = [
             ("Create\(entityName)UseCase", "vapor/components/CreateUseCase.stencil"),
             ("Get\(entityName)ByIdUseCase", "vapor/components/GetByIdUseCase.stencil"),
-            ("GetAll\(entityName)sUseCase", "vapor/components/GetAllUseCase.stencil"),
+            ("GetAll\(entityName.pluralized())UseCase", "vapor/components/GetAllUseCase.stencil"),
             ("Update\(entityName)UseCase", "vapor/components/UpdateUseCase.stencil"),
             ("Delete\(entityName)UseCase", "vapor/components/DeleteUseCase.stencil"),
         ]

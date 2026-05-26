@@ -87,6 +87,8 @@ struct FeatureContext {
     func controllerContext() -> GenerationContext {
         GenerationContext(
             name: controllerName,
+            fields: fields,
+            entity: entityName,
             outputPath: outputPath.map { "\($0)/Presentation/Controllers" },
             dryRun: dryRun
         )

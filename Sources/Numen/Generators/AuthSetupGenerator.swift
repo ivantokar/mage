@@ -19,6 +19,10 @@ class AuthSetupGenerator {
                 "vapor/auth/UserModel.stencil"
             ),
             (
+                "\(config.paths.domain)/Entities/UserToken.swift",
+                "vapor/auth/UserToken.stencil"
+            ),
+            (
                 "\(config.paths.presentation)/Controllers/AuthController.swift",
                 "vapor/auth/AuthController.stencil"
             ),
