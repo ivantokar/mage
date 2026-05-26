@@ -6,13 +6,14 @@ architecture:
     - domain
     - application
     - infrastructure
-    - presentation
+    - interface
 paths:
   sources: Sources/App
   domain: Sources/App/Domain
   application: Sources/App/Application
   infrastructure: Sources/App/Infrastructure
-  presentation: Sources/App/Presentation
+  persistence: Sources/App/Infrastructure/Persistence/Fluent
+  interface: Sources/App/Interface/HTTP
   tests: Tests/AppTests
 naming:
   repositorySuffix: Repository

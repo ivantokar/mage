@@ -1,5 +1,4 @@
-import Vapor
-import Fluent
+import Foundation
 
 struct {{ name }} {
     let repository: {{ repositoryName }}
@@ -8,10 +7,7 @@ struct {{ name }} {
         self.repository = repository
     }
 
-    func execute(id: UUID, on db: Database) async throws -> {{ entityName }} {
-        guard let model = try await repository.findById(id, on: db) else {
-            throw Abort(.notFound, reason: "{{ entityName }} not found")
-        }
-        return model
+    func execute(id: UUID) async throws -> {{ entityName }}? {
+        try await repository.findById(id)
     }
 }

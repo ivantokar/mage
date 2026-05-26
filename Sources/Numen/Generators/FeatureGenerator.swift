@@ -3,7 +3,8 @@ import Prompt
 
 class FeatureGenerator {
     private let config: NumenConfig
-    private let entityGenerator: EntityGenerator
+    private let aggregateRootGenerator: AggregateRootGenerator
+    private let fluentModelGenerator: FluentModelGenerator
     private let repositoryGenerator: RepositoryGenerator
     private let crudUseCasesGenerator: CRUDUseCasesGenerator
     private let dtoGenerator: DTOGenerator
@@ -13,7 +14,8 @@ class FeatureGenerator {
 
     init(config: NumenConfig) throws {
         self.config = config
-        self.entityGenerator = try EntityGenerator(config: config)
+        self.aggregateRootGenerator = try AggregateRootGenerator(config: config)
+        self.fluentModelGenerator = try FluentModelGenerator(config: config)
         self.repositoryGenerator = try RepositoryGenerator(config: config)
         self.crudUseCasesGenerator = try CRUDUseCasesGenerator(config: config)
         self.dtoGenerator = try DTOGenerator(config: config)
@@ -34,8 +36,11 @@ class FeatureGenerator {
         var generatedCount = 0
 
         if !context.shouldSkip(.entity) {
-            print("   Generating entity...".dim)
-            generatedCount += attempt { try self.entityGenerator.generate(context: context.entityContext()) }
+            print("   Generating aggregate root...".dim)
+            generatedCount += attempt { try self.aggregateRootGenerator.generate(context: context.aggregateContext()) }
+            print()
+            print("   Generating Fluent model...".dim)
+            generatedCount += attempt { try self.fluentModelGenerator.generate(context: context.persistenceModelContext()) }
             print()
         }
 

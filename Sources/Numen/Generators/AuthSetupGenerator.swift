@@ -15,27 +15,27 @@ class AuthSetupGenerator {
     func generate(context: GenerationContext) throws {
         let files: [(path: String, template: String)] = [
             (
-                "\(config.paths.domain)/Entities/User.swift",
+                "\(config.paths.persistence)/Models/User.swift",
                 "vapor/auth/UserModel.stencil"
             ),
             (
-                "\(config.paths.domain)/Entities/UserToken.swift",
+                "\(config.paths.persistence)/Models/UserToken.swift",
                 "vapor/auth/UserToken.stencil"
             ),
             (
-                "\(config.paths.presentation)/Controllers/AuthController.swift",
+                "\(config.paths.interface)/Controllers/AuthController.swift",
                 "vapor/auth/AuthController.stencil"
             ),
             (
-                "\(config.paths.presentation)/Middleware/AuthMiddleware.swift",
+                "\(config.paths.interface)/Middleware/AuthMiddleware.swift",
                 "vapor/auth/AuthMiddleware.stencil"
             ),
             (
-                "\(config.paths.infrastructure)/Migrations/CreateUser.swift",
+                "\(config.paths.persistence)/Migrations/CreateUser.swift",
                 "vapor/auth/CreateUserMigration.stencil"
             ),
             (
-                "\(config.paths.infrastructure)/Migrations/CreateToken.swift",
+                "\(config.paths.persistence)/Migrations/CreateToken.swift",
                 "vapor/auth/CreateTokenMigration.stencil"
             ),
         ]

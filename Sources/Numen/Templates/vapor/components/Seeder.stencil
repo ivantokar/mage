@@ -1,14 +1,12 @@
-import Vapor
 import Fluent
 
 struct {{ name }}: AsyncMigration {
     func prepare(on database: Database) async throws {
-        // Create sample {{ entityName }} records
-        let sample = {{ entityName }}()
+        let sample = {{ entityName }}Model()
         try await sample.save(on: database)
     }
 
     func revert(on database: Database) async throws {
-        try await {{ entityName }}.query(on: database).delete()
+        try await {{ entityName }}Model.query(on: database).delete()
     }
 }

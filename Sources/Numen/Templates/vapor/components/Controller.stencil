@@ -1,68 +1,65 @@
 import Vapor
-import Fluent
+
+extension {{ entityName }}DTO.Response: Content {}
 
 struct {{ name }}: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
-        let {{ entityName | camelCase }}s = routes.grouped("{{ entityName | snakeCase | pluralize }}")
-        {{ entityName | camelCase }}s.get(use: index)
-        {{ entityName | camelCase }}s.post(use: create)
-        {{ entityName | camelCase }}s.group(":id") { item in
+        let items = routes.grouped("{{ entityName | snakeCase | pluralize }}")
+        items.get(use: index)
+        items.post(use: create)
+        items.group(":id") { item in
             item.get(use: show)
             item.put(use: update)
             item.delete(use: delete)
         }
     }
 
-    func index(req: Request) async throws -> [{{ entityName }}] {
-        try await {{ entityName }}.query(on: req.db).all()
+    func index(req: Request) async throws -> [{{ entityName }}DTO.Response] {
+        let repo = Fluent{{ entityName }}Repository(db: req.db)
+        let useCase = GetAll{{ entityName | pluralize }}UseCase(repository: repo)
+        return try await useCase.execute().map { {{ entityName }}DTO.Response(from: $0) }
     }
 
-    func create(req: Request) async throws -> {{ entityName }} {
-        try {{ entityName }}DTO.Create.validate(content: req)
+    func create(req: Request) async throws -> {{ entityName }}DTO.Response {
         let input = try req.content.decode({{ entityName }}DTO.Create.self)
-        let model = {{ entityName }}(
-{% for field in fields %}
-            {{ field.name }}: input.{{ field.name }}{% if not forloop.last %},{% endif %}
-
-{% endfor %}
-        )
-        try await model.save(on: req.db)
-        return model
+        let repo = Fluent{{ entityName }}Repository(db: req.db)
+        let useCase = Create{{ entityName }}UseCase(repository: repo)
+        let result = try await useCase.execute(input)
+        return {{ entityName }}DTO.Response(from: result)
     }
 
-    func show(req: Request) async throws -> {{ entityName }} {
+    func show(req: Request) async throws -> {{ entityName }}DTO.Response {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest, reason: "Invalid ID")
         }
-        guard let model = try await {{ entityName }}.find(id, on: req.db) else {
+        let repo = Fluent{{ entityName }}Repository(db: req.db)
+        let useCase = Get{{ entityName }}ByIdUseCase(repository: repo)
+        guard let result = try await useCase.execute(id: id) else {
             throw Abort(.notFound)
         }
-        return model
+        return {{ entityName }}DTO.Response(from: result)
     }
 
-    func update(req: Request) async throws -> {{ entityName }} {
+    func update(req: Request) async throws -> {{ entityName }}DTO.Response {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest, reason: "Invalid ID")
-        }
-        guard let model = try await {{ entityName }}.find(id, on: req.db) else {
-            throw Abort(.notFound)
         }
         let input = try req.content.decode({{ entityName }}DTO.Update.self)
-{% for field in fields %}
-        if let {{ field.name }} = input.{{ field.name }} { model.{{ field.name }} = {{ field.name }} }
-{% endfor %}
-        try await model.save(on: req.db)
-        return model
+        let repo = Fluent{{ entityName }}Repository(db: req.db)
+        let useCase = Update{{ entityName }}UseCase(repository: repo)
+        guard let result = try await useCase.execute(id: id, input: input) else {
+            throw Abort(.notFound)
+        }
+        return {{ entityName }}DTO.Response(from: result)
     }
 
     func delete(req: Request) async throws -> HTTPStatus {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest, reason: "Invalid ID")
         }
-        guard let model = try await {{ entityName }}.find(id, on: req.db) else {
-            throw Abort(.notFound)
-        }
-        try await model.delete(on: req.db)
+        let repo = Fluent{{ entityName }}Repository(db: req.db)
+        let useCase = Delete{{ entityName }}UseCase(repository: repo)
+        try await useCase.execute(id: id)
         return .noContent
     }
 }

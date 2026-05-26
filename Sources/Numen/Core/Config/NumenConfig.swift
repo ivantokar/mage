@@ -18,7 +18,8 @@ struct NumenConfig: Codable {
         let domain: String
         let application: String
         let infrastructure: String
-        let presentation: String
+        let persistence: String
+        let interface: String
         let tests: String
     }
 
@@ -53,14 +54,15 @@ struct NumenConfig: Codable {
         framework: "vapor",
         architecture: ArchitectureConfig(
             style: "ddd",
-            layers: ["domain", "application", "infrastructure", "presentation"]
+            layers: ["domain", "application", "infrastructure", "interface"]
         ),
         paths: PathsConfig(
             sources: "Sources/App",
             domain: "Sources/App/Domain",
             application: "Sources/App/Application",
             infrastructure: "Sources/App/Infrastructure",
-            presentation: "Sources/App/Presentation",
+            persistence: "Sources/App/Infrastructure/Persistence/Fluent",
+            interface: "Sources/App/Interface/HTTP",
             tests: "Tests/AppTests"
         ),
         naming: NamingConfig(

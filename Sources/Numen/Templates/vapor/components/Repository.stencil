@@ -1,9 +1,8 @@
-import Vapor
-import Fluent
+import Foundation
 
-protocol {{ name }}: Sendable {
-    func findById(_ id: UUID, on db: Database) async throws -> {{ entityName }}?
-    func findAll(on db: Database) async throws -> [{{ entityName }}]
-    func save(_ model: {{ entityName }}, on db: Database) async throws
-    func delete(_ id: UUID, on db: Database) async throws
+protocol {{ name }} {
+    func findById(_ id: UUID) async throws -> {{ entityName }}?
+    func findAll() async throws -> [{{ entityName }}]
+    func save(_ aggregate: {{ entityName }}) async throws
+    func delete(_ id: UUID) async throws
 }

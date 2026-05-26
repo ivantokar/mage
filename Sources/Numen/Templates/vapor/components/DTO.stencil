@@ -1,36 +1,30 @@
-import Vapor
+import Foundation
 
 enum {{ name }} {
-    struct Create: Content, Validatable {
-{% for field in fields %}
-        var {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}
-
-{% endfor %}
-        static func validations(_ validations: inout Validations) {
-{% for field in fields %}
-{% if field.isEmail %}
-            validations.add("{{ field.name }}", as: String.self, is: .email)
-{% endif %}
-{% if not field.optional and field.swiftType == "String" %}
-            validations.add("{{ field.name }}", as: String.self, is: !.empty)
-{% endif %}
-{% endfor %}
-        }
-    }
-
-    struct Update: Content {
-{% for field in fields %}
-        var {{ field.name }}: {{ field.swiftType }}?
-{% endfor %}
-    }
-
-    struct Response: Content {
-        let id: UUID?
+    struct Create: Codable {
 {% for field in fields %}
         let {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}
 
 {% endfor %}
-        let createdAt: Date?
-        let updatedAt: Date?
+    }
+
+    struct Update: Codable {
+{% for field in fields %}
+        let {{ field.name }}: {{ field.swiftType }}?
+{% endfor %}
+    }
+
+    struct Response: Codable {
+        let id: UUID
+{% for field in fields %}
+        let {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}
+
+{% endfor %}
+        init(from aggregate: {{ entityName }}) {
+            self.id = aggregate.id
+{% for field in fields %}
+            self.{{ field.name }} = aggregate.{{ field.name }}
+{% endfor %}
+        }
     }
 }

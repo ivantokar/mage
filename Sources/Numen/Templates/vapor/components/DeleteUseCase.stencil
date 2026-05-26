@@ -1,5 +1,4 @@
-import Vapor
-import Fluent
+import Foundation
 
 struct {{ name }} {
     let repository: {{ repositoryName }}
@@ -8,7 +7,7 @@ struct {{ name }} {
         self.repository = repository
     }
 
-    func execute(id: UUID, on db: Database) async throws {
-        try await repository.delete(id, on: db)
+    func execute(id: UUID) async throws {
+        try await repository.delete(id)
     }
 }

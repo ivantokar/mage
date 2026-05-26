@@ -9,6 +9,10 @@ struct {{ name }}: Equatable, Hashable, Codable {
     let value: String
 
 {% endif %}
+    enum ValidationError: Error {
+        case invalidValue(String)
+    }
+
     init({% if hasFields %}{% for field in fields %}{{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}{% if not forloop.last %}, {% endif %}{% endfor %}{% else %}_ value: String{% endif %}) throws {
 {% if hasFields %}
 {% for field in fields %}
@@ -16,7 +20,7 @@ struct {{ name }}: Equatable, Hashable, Codable {
 {% endfor %}
 {% else %}
         guard !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            throw Abort(.badRequest, reason: "{{ name }} value cannot be empty")
+            throw ValidationError.invalidValue("{{ name }} value cannot be empty")
         }
         self.value = value
 {% endif %}

@@ -45,11 +45,20 @@ struct FeatureContext {
         self.skipComponents = skipComponents
     }
 
-    func entityContext() -> GenerationContext {
+    func aggregateContext() -> GenerationContext {
         GenerationContext(
             name: entityName,
             fields: fields,
-            outputPath: outputPath.map { "\($0)/Domain/Entities" },
+            outputPath: outputPath.map { "\($0)/Domain/Aggregates" },
+            dryRun: dryRun
+        )
+    }
+
+    func persistenceModelContext() -> GenerationContext {
+        GenerationContext(
+            name: entityName,
+            fields: fields,
+            outputPath: outputPath.map { "\($0)/Infrastructure/Persistence/Fluent/Models" },
             dryRun: dryRun
         )
     }
@@ -89,7 +98,7 @@ struct FeatureContext {
             name: controllerName,
             fields: fields,
             entity: entityName,
-            outputPath: outputPath.map { "\($0)/Presentation/Controllers" },
+            outputPath: outputPath.map { "\($0)/Interface/HTTP/Controllers" },
             dryRun: dryRun
         )
     }
@@ -97,7 +106,7 @@ struct FeatureContext {
     func routeContext() -> GenerationContext {
         GenerationContext(
             name: name,
-            outputPath: outputPath.map { "\($0)/Presentation/Routes" },
+            outputPath: outputPath.map { "\($0)/Interface/HTTP/Routes" },
             dryRun: dryRun
         )
     }
@@ -107,7 +116,7 @@ struct FeatureContext {
             name: migrationName,
             fields: fields,
             entity: entityName,
-            outputPath: outputPath.map { "\($0)/Infrastructure/Migrations" },
+            outputPath: outputPath.map { "\($0)/Infrastructure/Persistence/Fluent/Migrations" },
             dryRun: dryRun
         )
     }

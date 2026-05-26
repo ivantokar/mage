@@ -1,26 +1,13 @@
-import Vapor
-import Fluent
+import Foundation
 
-final class {{ name }}: Model, Content, @unchecked Sendable {
-    static let schema = "{{ name | snakeCase | pluralize }}"
-
-    @ID(key: .id)
-    var id: UUID?
+struct {{ name }}: Equatable, Codable {
+    let id: UUID
 {% for field in fields %}
-    @Field(key: "{{ field.name | snakeCase }}")
-    var {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}
+    let {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}
 
 {% endfor %}
-    @Timestamp(key: "created_at", on: .create)
-    var createdAt: Date?
-
-    @Timestamp(key: "updated_at", on: .update)
-    var updatedAt: Date?
-
-    init() {}
-
     init(
-        id: UUID? = nil{% for field in fields %},
+        id: UUID = UUID(){% for field in fields %},
         {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %} = {% if field.optional %}nil{% elif field.swiftType == "Bool" %}false{% elif field.swiftType == "Int" %}0{% elif field.swiftType == "Double" %}0.0{% elif field.swiftType == "Float" %}0.0{% elif field.swiftType == "UUID" %}UUID(){% else %}{{ field.swiftType }}(){% endif %}{% endfor %}
     ) {
         self.id = id

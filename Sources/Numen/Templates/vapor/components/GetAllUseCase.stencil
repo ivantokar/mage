@@ -1,5 +1,4 @@
-import Vapor
-import Fluent
+import Foundation
 
 struct {{ name }} {
     let repository: {{ repositoryName }}
@@ -8,7 +7,7 @@ struct {{ name }} {
         self.repository = repository
     }
 
-    func execute(on db: Database) async throws -> [{{ entityName }}] {
-        try await repository.findAll(on: db)
+    func execute() async throws -> [{{ entityName }}] {
+        try await repository.findAll()
     }
 }

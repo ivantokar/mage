@@ -9,6 +9,6 @@ protocol DomainEvent: Sendable {
 // MARK: - Aggregate Root
 
 protocol AggregateRoot: Sendable {
-    var id: UUID? { get }
+    var id: UUID { get }
     func pullDomainEvents() -> [DomainEvent]
 }

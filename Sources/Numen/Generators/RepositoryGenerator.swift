@@ -64,9 +64,9 @@ class RepositoryGenerator {
         let implOutputPath: String
         if let customOutput = context.outputPath {
             implOutputPath = pathResolver.resolvePath(componentType: .repository, customOutput: customOutput)
-                .replacingOccurrences(of: "/Domain/Repositories", with: "/Infrastructure/Repositories")
+                .replacingOccurrences(of: "/Domain/Repositories", with: "/Infrastructure/Persistence/Fluent/Repositories")
         } else {
-            implOutputPath = "\(FileManager.default.currentDirectoryPath)/\(config.paths.infrastructure)/Repositories"
+            implOutputPath = "\(FileManager.default.currentDirectoryPath)/\(config.paths.persistence)/Repositories"
         }
 
         let fullPath = "\(implOutputPath)/\(fileName)"

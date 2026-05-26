@@ -20,10 +20,12 @@ class PathResolver {
             layerPath = config.paths.domain
         case "application":
             layerPath = config.paths.application
-        case "presentation":
-            layerPath = config.paths.presentation
         case "infrastructure":
             layerPath = config.paths.infrastructure
+        case "persistence":
+            layerPath = config.paths.persistence
+        case "interface":
+            layerPath = config.paths.interface
         case "tests":
             layerPath = config.paths.tests
         default:
