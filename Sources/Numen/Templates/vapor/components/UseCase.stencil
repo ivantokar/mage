@@ -1,0 +1,16 @@
+import Vapor
+
+protocol {{ name }}Protocol {
+    associatedtype Input
+    associatedtype Output
+    func execute(_ input: Input, on db: Database) async throws -> Output
+}
+
+struct {{ name }}: {{ name }}Protocol {
+    typealias Input = Void
+    typealias Output = Void
+
+    func execute(_ input: Void, on db: Database) async throws {
+        // TODO: implement use case
+    }
+}

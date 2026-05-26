@@ -1,0 +1,10 @@
+import Vapor
+
+struct {{ name }}: AsyncMiddleware {
+    func respond(to request: Request, chainingTo next: AsyncResponder) async throws -> Response {
+        // Pre-processing
+        let response = try await next.respond(to: request)
+        // Post-processing
+        return response
+    }
+}

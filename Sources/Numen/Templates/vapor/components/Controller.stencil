@@ -1,0 +1,61 @@
+import Vapor
+import Fluent
+
+struct {{ name }}: RouteCollection {
+    func boot(routes: RoutesBuilder) throws {
+        let {{ entityName | camelCase }}s = routes.grouped("{{ entityName | snakeCase | pluralize }}")
+        {{ entityName | camelCase }}s.get(use: index)
+        {{ entityName | camelCase }}s.post(use: create)
+        {{ entityName | camelCase }}s.group(":id") { item in
+            item.get(use: show)
+            item.put(use: update)
+            item.delete(use: delete)
+        }
+    }
+
+    func index(req: Request) async throws -> [{{ entityName }}] {
+        try await {{ entityName }}.query(on: req.db).all()
+    }
+
+    func create(req: Request) async throws -> {{ entityName }} {
+        try {{ entityName }}DTO.Create.validate(content: req)
+        let input = try req.content.decode({{ entityName }}DTO.Create.self)
+        let model = {{ entityName }}({% if entityName %}{% endif %})
+        try await model.save(on: req.db)
+        return model
+    }
+
+    func show(req: Request) async throws -> {{ entityName }} {
+        guard let id = req.parameters.get("id", as: UUID.self) else {
+            throw Abort(.badRequest, reason: "Invalid ID")
+        }
+        guard let model = try await {{ entityName }}.find(id, on: req.db) else {
+            throw Abort(.notFound)
+        }
+        return model
+    }
+
+    func update(req: Request) async throws -> {{ entityName }} {
+        guard let id = req.parameters.get("id", as: UUID.self) else {
+            throw Abort(.badRequest, reason: "Invalid ID")
+        }
+        guard let model = try await {{ entityName }}.find(id, on: req.db) else {
+            throw Abort(.notFound)
+        }
+        let input = try req.content.decode({{ entityName }}DTO.Update.self)
+        // Apply updates from input
+        try await model.save(on: req.db)
+        return model
+    }
+
+    func delete(req: Request) async throws -> HTTPStatus {
+        guard let id = req.parameters.get("id", as: UUID.self) else {
+            throw Abort(.badRequest, reason: "Invalid ID")
+        }
+        guard let model = try await {{ entityName }}.find(id, on: req.db) else {
+            throw Abort(.notFound)
+        }
+        try await model.delete(on: req.db)
+        return .noContent
+    }
+}

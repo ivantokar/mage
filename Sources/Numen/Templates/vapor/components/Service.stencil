@@ -1,0 +1,10 @@
+import Vapor
+
+protocol {{ name }}Protocol {
+    // Define service interface
+}
+
+struct {{ name }}: {{ name }}Protocol {
+    // Inject dependencies via initializer
+    init() {}
+}

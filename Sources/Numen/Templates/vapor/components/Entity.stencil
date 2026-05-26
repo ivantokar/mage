@@ -1,0 +1,31 @@
+import Vapor
+import Fluent
+
+final class {{ name }}: Model, Content, @unchecked Sendable {
+    static let schema = "{{ name | snakeCase | pluralize }}"
+
+    @ID(key: .id)
+    var id: UUID?
+{% for field in fields %}
+    @Field(key: "{{ field.name | snakeCase }}")
+    var {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}
+
+{% endfor %}
+    @Timestamp(key: "created_at", on: .create)
+    var createdAt: Date?
+
+    @Timestamp(key: "updated_at", on: .update)
+    var updatedAt: Date?
+
+    init() {}
+
+    init(
+        id: UUID? = nil{% for field in fields %},
+        {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %} = {% if field.optional %}nil{% else %}{{ field.swiftType }}(){% endif %}{% endfor %}
+    ) {
+        self.id = id
+{% for field in fields %}
+        self.{{ field.name }} = {{ field.name }}
+{% endfor %}
+    }
+}

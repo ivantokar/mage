@@ -1,0 +1,24 @@
+version: "1.0"
+framework: vapor
+architecture:
+  style: ddd
+  layers:
+    - domain
+    - application
+    - infrastructure
+    - presentation
+paths:
+  sources: Sources/App
+  domain: Sources/App/Domain
+  application: Sources/App/Application
+  infrastructure: Sources/App/Infrastructure
+  presentation: Sources/App/Presentation
+  tests: Tests/AppTests
+naming:
+  repositorySuffix: Repository
+  serviceSuffix: Service
+  useCaseSuffix: UseCase
+  controllerSuffix: Controller
+  caseStyle: PascalCase
+database:
+  type: {{ database }}

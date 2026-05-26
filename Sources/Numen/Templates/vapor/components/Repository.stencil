@@ -1,0 +1,8 @@
+import Vapor
+
+protocol {{ name }}: Sendable {
+    func findById(_ id: UUID, on db: Database) async throws -> {{ entityName }}?
+    func findAll(on db: Database) async throws -> [{{ entityName }}]
+    func save(_ model: {{ entityName }}, on db: Database) async throws
+    func delete(_ id: UUID, on db: Database) async throws
+}

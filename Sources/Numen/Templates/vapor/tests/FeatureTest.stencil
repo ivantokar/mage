@@ -1,0 +1,34 @@
+import XCTest
+import XCTVapor
+@testable import App
+
+final class {{ name }}: XCTestCase {
+    var app: Application!
+
+    override func setUp() async throws {
+        app = Application(.testing)
+        try await configure(app)
+        try await app.autoMigrate()
+    }
+
+    override func tearDown() async throws {
+        try await app.autoRevert()
+        await app.asyncShutdown()
+    }
+
+    func testCreate() async throws {
+        // TODO: test feature create flow
+    }
+
+    func testRead() async throws {
+        // TODO: test feature read flow
+    }
+
+    func testUpdate() async throws {
+        // TODO: test feature update flow
+    }
+
+    func testDelete() async throws {
+        // TODO: test feature delete flow
+    }
+}

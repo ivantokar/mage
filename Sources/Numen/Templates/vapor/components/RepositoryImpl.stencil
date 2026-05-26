@@ -1,0 +1,23 @@
+import Vapor
+import Fluent
+
+struct {{ implName }}: {{ protocolName }} {
+    func findById(_ id: UUID, on db: Database) async throws -> {{ entityName }}? {
+        try await {{ entityName }}.find(id, on: db)
+    }
+
+    func findAll(on db: Database) async throws -> [{{ entityName }}] {
+        try await {{ entityName }}.query(on: db).all()
+    }
+
+    func save(_ model: {{ entityName }}, on db: Database) async throws {
+        try await model.save(on: db)
+    }
+
+    func delete(_ id: UUID, on db: Database) async throws {
+        guard let model = try await {{ entityName }}.find(id, on: db) else {
+            throw Abort(.notFound, reason: "{{ entityName }} not found")
+        }
+        try await model.delete(on: db)
+    }
+}

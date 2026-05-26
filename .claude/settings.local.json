@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /Users/ivantokar/Work/numen/Sources/Numen/Commands)",
+      "Bash(mkdir -p /Users/ivantokar/Work/numen/Sources/Numen/Core/Config)",
+      "Bash(mkdir -p /Users/ivantokar/Work/numen/Sources/Numen/Core/FileSystem)",
+      "Bash(mkdir -p /Users/ivantokar/Work/numen/Sources/Numen/Core/Templates)",
+      "Bash(mkdir -p /Users/ivantokar/Work/numen/Sources/Numen/Core/Utilities)",
+      "Bash(swift build *)",
+      "Bash(git rm *)",
+      "Bash(git add *)"
+    ]
+  }
+}

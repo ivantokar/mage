@@ -1,0 +1,21 @@
+import Vapor
+import Fluent
+
+struct {{ name }} {
+    let repository: {{ repositoryName }}Protocol
+
+    init(repository: {{ repositoryName }}Protocol) {
+        self.repository = repository
+    }
+
+    func execute(_ input: {{ dtoName }}.Create, on db: Database) async throws -> {{ entityName }} {
+        let model = {{ entityName }}(
+{% for field in fields %}
+            {{ field.name }}: input.{{ field.name }}{% if not forloop.last %},{% endif %}
+
+{% endfor %}
+        )
+        try await repository.save(model, on: db)
+        return model
+    }
+}

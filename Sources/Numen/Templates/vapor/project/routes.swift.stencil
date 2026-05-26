@@ -1,0 +1,14 @@
+import Vapor
+
+func routes(_ app: Application) throws {
+    app.get { req async in
+        "{{ projectName }} is running"
+    }
+
+    app.get("health") { req async -> HTTPStatus in
+        .ok
+    }
+
+    // Register feature routes:
+    // try app.register(collection: UserController())
+}

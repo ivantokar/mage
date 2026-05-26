@@ -1,0 +1,25 @@
+import Fluent
+
+struct {{ name }}: AsyncMigration {
+    func prepare(on database: Database) async throws {
+        try await database.schema("{{ fromEntity | snakeCase }}_{{ toEntity | snakeCase }}_pivot")
+            .id()
+            .field("{{ fromEntity | snakeCase }}_id", .uuid, .required)
+            .field("{{ toEntity | snakeCase }}_id", .uuid, .required)
+            .foreignKey(
+                "{{ fromEntity | snakeCase }}_id",
+                references: "{{ fromEntity | snakeCase | pluralize }}", "id",
+                onDelete: .cascade
+            )
+            .foreignKey(
+                "{{ toEntity | snakeCase }}_id",
+                references: "{{ toEntity | snakeCase | pluralize }}", "id",
+                onDelete: .cascade
+            )
+            .create()
+    }
+
+    func revert(on database: Database) async throws {
+        try await database.schema("{{ fromEntity | snakeCase }}_{{ toEntity | snakeCase }}_pivot").delete()
+    }
+}

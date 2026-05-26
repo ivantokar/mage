@@ -1,0 +1,32 @@
+import Foundation
+
+protocol DomainEvent {}
+
+final class {{ name }} {
+    let id: UUID
+{% for field in fields %}
+    private(set) var {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}
+
+{% endfor %}
+    private var domainEvents: [DomainEvent] = []
+
+    init(
+        id: UUID = UUID(){% for field in fields %},
+        {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}{% endfor %}
+    ) {
+        self.id = id
+{% for field in fields %}
+        self.{{ field.name }} = {{ field.name }}
+{% endfor %}
+    }
+
+    func pullDomainEvents() -> [DomainEvent] {
+        let events = domainEvents
+        domainEvents.removeAll()
+        return events
+    }
+
+    private func raise(_ event: DomainEvent) {
+        domainEvents.append(event)
+    }
+}

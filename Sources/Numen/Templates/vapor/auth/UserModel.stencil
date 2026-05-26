@@ -1,0 +1,42 @@
+import Vapor
+import Fluent
+
+final class User: Model, Content, @unchecked Sendable {
+    static let schema = "users"
+
+    @ID(key: .id)
+    var id: UUID?
+
+    @Field(key: "email")
+    var email: String
+
+    @Field(key: "password_hash")
+    var passwordHash: String
+
+    @Field(key: "name")
+    var name: String
+
+    @Timestamp(key: "created_at", on: .create)
+    var createdAt: Date?
+
+    @Timestamp(key: "updated_at", on: .update)
+    var updatedAt: Date?
+
+    init() {}
+
+    init(id: UUID? = nil, email: String, passwordHash: String, name: String) {
+        self.id = id
+        self.email = email
+        self.passwordHash = passwordHash
+        self.name = name
+    }
+}
+
+extension User: ModelAuthenticatable {
+    static let usernameKey = \User.$email
+    static let passwordHashKey = \User.$passwordHash
+
+    func verify(password: String) throws -> Bool {
+        try Bcrypt.verify(password, created: passwordHash)
+    }
+}

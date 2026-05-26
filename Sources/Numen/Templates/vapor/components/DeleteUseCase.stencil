@@ -1,0 +1,14 @@
+import Vapor
+import Fluent
+
+struct {{ name }} {
+    let repository: {{ repositoryName }}Protocol
+
+    init(repository: {{ repositoryName }}Protocol) {
+        self.repository = repository
+    }
+
+    func execute(id: UUID, on db: Database) async throws {
+        try await repository.delete(id, on: db)
+    }
+}
