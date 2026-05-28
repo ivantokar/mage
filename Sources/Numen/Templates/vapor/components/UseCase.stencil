@@ -1,14 +1,34 @@
 import Foundation
 
-protocol {{ name }}Protocol {
-    associatedtype Input
-    associatedtype Output
-    func execute(_ input: Input) async throws -> Output
-}
+{% if entityName %}
+struct {{ name }} {
+    let repository: {{ entityName }}Repository
 
-struct {{ name }}: {{ name }}Protocol {
-    typealias Input = Void
-    typealias Output = Void
+    init(repository: {{ entityName }}Repository) {
+        self.repository = repository
+    }
 
-    func execute(_ input: Void) async throws {}
+    struct Input {
+        let id: UUID
+    }
+
+    func execute(_ input: Input) async throws {
+        guard let aggregate = try await repository.findById(input.id) else {
+            throw UseCaseError.notFound("{{ entityName }} not found: \(input.id)")
+        }
+        // TODO: Call aggregate behavior method, e.g.:
+        // try aggregate.performAction(...)
+        try await repository.save(aggregate)
+    }
 }
+{% else %}
+struct {{ name }} {
+    struct Input {}
+    struct Output {}
+
+    func execute(_ input: Input) async throws -> Output {
+        // TODO: Implement use case
+        return Output()
+    }
+}
+{% endif %}

@@ -1,12 +1,22 @@
 import Foundation
 
+// MARK: - Errors
+
+enum {{ name }}Error: Error {
+    case invalidStateTransition(String)
+    case invariantViolation(String)
+}
+
+// MARK: - Aggregate Root
+
 final class {{ name }}: AggregateRoot, @unchecked Sendable {
     let id: UUID
 {% for field in fields %}
     var {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}
-
 {% endfor %}
     private var domainEvents: [DomainEvent] = []
+
+    // MARK: - Init
 
     init(
         id: UUID = UUID(){% for field in fields %},
@@ -17,6 +27,51 @@ final class {{ name }}: AggregateRoot, @unchecked Sendable {
         self.{{ field.name }} = {{ field.name }}
 {% endfor %}
     }
+
+    // MARK: - Behavior
+    //
+    // TODO: Implement {{ name }}-specific domain behavior.
+    // Each method must: (1) check preconditions, (2) mutate state, (3) emit an event via raise().
+    //
+    //   func performAction(_ param: ParamType) throws {
+    //       guard <precondition> else {
+    //           throw {{ name }}Error.invariantViolation("Reason")
+    //       }
+    //       <mutate state>
+    //       raise(<EventType>(occurredAt: Date()))
+    //   }
+{% for field in fields %}{% if field.name == "status" %}
+
+    func activate() throws {
+        guard status != "active" else {
+            throw {{ name }}Error.invalidStateTransition("{{ name }} is already active")
+        }
+        status = "active"
+        // TODO: raise({{ name }}Activated(occurredAt: Date()))
+    }
+
+    func deactivate(reason: String? = nil) throws {
+        guard status == "active" else {
+            throw {{ name }}Error.invalidStateTransition(
+                "Cannot deactivate {{ name }}: not active (current: \(status))"
+            )
+        }
+        status = "inactive"
+        // TODO: raise({{ name }}Deactivated(occurredAt: Date()))
+    }
+{% endif %}{% endfor %}{% for field in fields %}{% if field.swiftType == "Int" %}{% if field.name == "quantity" %}
+
+    func adjustQuantity(by delta: Int) throws {
+        let newQuantity = quantity + delta
+        guard newQuantity >= 0 else {
+            throw {{ name }}Error.invariantViolation("Quantity cannot go below zero")
+        }
+        quantity = newQuantity
+        // TODO: raise appropriate event
+    }
+{% endif %}{% endif %}{% endfor %}
+
+    // MARK: - Domain Events
 
     func pullDomainEvents() -> [DomainEvent] {
         let events = domainEvents

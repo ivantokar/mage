@@ -2,8 +2,30 @@ import XCTest
 @testable import App
 
 final class {{ name }}: XCTestCase {
+
     func testInit() throws {
-        let entity = {{ entityName }}()
-        XCTAssertNil(entity.id)
+        let aggregate = {{ entityName }}()
+        XCTAssertNotNil(aggregate.id)
+    }
+
+    func testDomainEventsStartEmpty() throws {
+        let aggregate = {{ entityName }}()
+        let events = aggregate.pullDomainEvents()
+        XCTAssertTrue(events.isEmpty)
+    }
+
+    func testInvariants() throws {
+        // TODO: Test {{ entityName }} invariants, e.g.:
+        //
+        // let aggregate = {{ entityName }}(status: "inactive")
+        // XCTAssertThrowsError(try aggregate.activate()) { error in
+        //     guard let err = error as? {{ entityName }}Error else {
+        //         XCTFail("Expected {{ entityName }}Error")
+        //         return
+        //     }
+        //     if case .invalidStateTransition = err { } else {
+        //         XCTFail("Expected invalidStateTransition, got \(err)")
+        //     }
+        // }
     }
 }

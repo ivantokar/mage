@@ -1,0 +1,10 @@
+import Foundation
+
+// MARK: - Use Case Errors
+
+enum UseCaseError: Error {
+    case notFound(String)
+    case validationFailed(String)
+    case unauthorized(String)
+    case conflict(String)
+}

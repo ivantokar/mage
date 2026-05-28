@@ -19,6 +19,7 @@ struct ProjectConfiguration {
                 "Sources/App/Domain/Events",
                 "Sources/App/Domain/Repositories",
                 "Sources/App/Domain/Services",
+                "Sources/App/Application",
                 "Sources/App/Application/UseCases",
                 "Sources/App/Application/DTOs",
                 "Sources/App/Infrastructure/Persistence/Fluent/Models",
@@ -39,6 +40,7 @@ struct ProjectConfiguration {
                 TemplateFile(path: "Sources/App/entrypoint.swift", template: "vapor/project/entrypoint.swift.stencil"),
                 TemplateFile(path: "Sources/App/configure.swift", template: "vapor/project/configure.swift.stencil"),
                 TemplateFile(path: "Sources/App/Domain/DomainProtocols.swift", template: "vapor/project/DomainProtocols.swift.stencil"),
+                TemplateFile(path: "Sources/App/Application/ApplicationErrors.swift", template: "vapor/project/ApplicationErrors.swift.stencil"),
                 TemplateFile(path: "Sources/App/Interface/HTTP/Routes/routes.swift", template: "vapor/project/routes.swift.stencil"),
                 TemplateFile(path: "Tests/AppTests/AppTests.swift", template: "vapor/project/AppTests.swift.stencil"),
             ]
