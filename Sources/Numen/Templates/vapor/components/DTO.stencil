@@ -6,12 +6,34 @@ enum {{ name }} {
         let {{ field.name }}: {{ field.swiftType }}{% if field.optional %}?{% endif %}
 
 {% endfor %}
+{% if not hasFields %}
+        // TODO: Add create fields
+{% endif %}
+        init(from request: Create{{ entityName }}Request) {
+{% for field in fields %}
+            self.{{ field.name }} = request.{{ field.name }}
+{% endfor %}
+{% if not hasFields %}
+            // TODO: Map from request
+{% endif %}
+        }
     }
 
     struct Update: Codable {
 {% for field in fields %}
-        let {{ field.name }}: {{ field.swiftType }}?
+        var {{ field.name }}: {{ field.swiftType }}?
 {% endfor %}
+{% if not hasFields %}
+        // TODO: Add update fields
+{% endif %}
+        init(from request: Update{{ entityName }}Request) {
+{% for field in fields %}
+            self.{{ field.name }} = request.{{ field.name }}
+{% endfor %}
+{% if not hasFields %}
+            // TODO: Map from request
+{% endif %}
+        }
     }
 
     struct Response: Codable {

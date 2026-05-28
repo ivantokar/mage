@@ -1,7 +1,5 @@
 import Vapor
 
-extension {{ entityName }}DTO.Response: Content {}
-
 struct {{ name }}: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         let items = routes.grouped("{{ entityName | snakeCase | pluralize }}")
@@ -14,21 +12,22 @@ struct {{ name }}: RouteCollection {
         }
     }
 
-    func index(req: Request) async throws -> [{{ entityName }}DTO.Response] {
+    func index(req: Request) async throws -> [{{ entityName }}Response] {
         let repo = Fluent{{ entityName }}Repository(db: req.db)
         let useCase = GetAll{{ entityName | pluralize }}UseCase(repository: repo)
-        return try await useCase.execute().map { {{ entityName }}DTO.Response(from: $0) }
+        return try await useCase.execute().map { {{ entityName }}Response(from: $0) }
     }
 
-    func create(req: Request) async throws -> {{ entityName }}DTO.Response {
-        let input = try req.content.decode({{ entityName }}DTO.Create.self)
+    func create(req: Request) async throws -> {{ entityName }}Response {
+        let input = try req.content.decode(Create{{ entityName }}Request.self)
+        let dto = {{ entityName }}DTO.Create(from: input)
         let repo = Fluent{{ entityName }}Repository(db: req.db)
         let useCase = Create{{ entityName }}UseCase(repository: repo)
-        let result = try await useCase.execute(input)
-        return {{ entityName }}DTO.Response(from: result)
+        let result = try await useCase.execute(dto)
+        return {{ entityName }}Response(from: result)
     }
 
-    func show(req: Request) async throws -> {{ entityName }}DTO.Response {
+    func show(req: Request) async throws -> {{ entityName }}Response {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest, reason: "Invalid ID")
         }
@@ -37,20 +36,21 @@ struct {{ name }}: RouteCollection {
         guard let result = try await useCase.execute(id: id) else {
             throw Abort(.notFound)
         }
-        return {{ entityName }}DTO.Response(from: result)
+        return {{ entityName }}Response(from: result)
     }
 
-    func update(req: Request) async throws -> {{ entityName }}DTO.Response {
+    func update(req: Request) async throws -> {{ entityName }}Response {
         guard let id = req.parameters.get("id", as: UUID.self) else {
             throw Abort(.badRequest, reason: "Invalid ID")
         }
-        let input = try req.content.decode({{ entityName }}DTO.Update.self)
+        let input = try req.content.decode(Update{{ entityName }}Request.self)
+        let dto = {{ entityName }}DTO.Update(from: input)
         let repo = Fluent{{ entityName }}Repository(db: req.db)
         let useCase = Update{{ entityName }}UseCase(repository: repo)
-        guard let result = try await useCase.execute(id: id, input: input) else {
+        guard let result = try await useCase.execute(id: id, input: dto) else {
             throw Abort(.notFound)
         }
-        return {{ entityName }}DTO.Response(from: result)
+        return {{ entityName }}Response(from: result)
     }
 
     func delete(req: Request) async throws -> HTTPStatus {

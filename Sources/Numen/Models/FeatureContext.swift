@@ -5,6 +5,8 @@ enum FeatureComponent: String, CaseIterable {
     case repository
     case usecases
     case dto
+    case requests
+    case responses
     case controller
     case routes
     case migration
@@ -89,6 +91,26 @@ struct FeatureContext {
             fields: fields,
             entity: entityName,
             outputPath: outputPath.map { "\($0)/Application/DTOs" },
+            dryRun: dryRun
+        )
+    }
+
+    func httpRequestContext() -> GenerationContext {
+        GenerationContext(
+            name: entityName,
+            fields: fields,
+            entity: entityName,
+            outputPath: outputPath.map { "\($0)/Interface/HTTP/Requests" },
+            dryRun: dryRun
+        )
+    }
+
+    func httpResponseContext() -> GenerationContext {
+        GenerationContext(
+            name: entityName,
+            fields: fields,
+            entity: entityName,
+            outputPath: outputPath.map { "\($0)/Interface/HTTP/Responses" },
             dryRun: dryRun
         )
     }

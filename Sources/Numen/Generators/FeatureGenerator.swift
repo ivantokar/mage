@@ -8,6 +8,8 @@ class FeatureGenerator {
     private let repositoryGenerator: RepositoryGenerator
     private let crudUseCasesGenerator: CRUDUseCasesGenerator
     private let dtoGenerator: DTOGenerator
+    private let httpRequestGenerator: HTTPRequestGenerator
+    private let httpResponseGenerator: HTTPResponseGenerator
     private let controllerGenerator: ControllerGenerator
     private let routeGenerator: RouteGenerator
     private let migrationGenerator: MigrationGenerator
@@ -19,6 +21,8 @@ class FeatureGenerator {
         self.repositoryGenerator = try RepositoryGenerator(config: config)
         self.crudUseCasesGenerator = try CRUDUseCasesGenerator(config: config)
         self.dtoGenerator = try DTOGenerator(config: config)
+        self.httpRequestGenerator = try HTTPRequestGenerator(config: config)
+        self.httpResponseGenerator = try HTTPResponseGenerator(config: config)
         self.controllerGenerator = try ControllerGenerator(config: config)
         self.routeGenerator = try RouteGenerator(config: config)
         self.migrationGenerator = try MigrationGenerator(config: config)
@@ -47,6 +51,18 @@ class FeatureGenerator {
         if !context.shouldSkip(.dto) {
             print("   Generating DTO...".dim)
             generatedCount += attempt { try self.dtoGenerator.generate(context: context.dtoContext()) }
+            print()
+        }
+
+        if !context.shouldSkip(.requests) {
+            print("   Generating HTTP requests...".dim)
+            generatedCount += attempt { try self.httpRequestGenerator.generate(context: context.httpRequestContext()) }
+            print()
+        }
+
+        if !context.shouldSkip(.responses) {
+            print("   Generating HTTP response...".dim)
+            generatedCount += attempt { try self.httpResponseGenerator.generate(context: context.httpResponseContext()) }
             print()
         }
 

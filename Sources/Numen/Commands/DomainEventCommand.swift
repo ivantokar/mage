@@ -4,7 +4,7 @@ import Prompt
 
 struct DomainEventCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "event",
+        commandName: "domain-event",
         abstract: "Generate a domain event"
     )
 

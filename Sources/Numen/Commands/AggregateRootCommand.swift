@@ -4,7 +4,7 @@ import Prompt
 
 struct AggregateRootCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "aggregate",
+        commandName: "aggregate-root",
         abstract: "Generate an aggregate root"
     )
 

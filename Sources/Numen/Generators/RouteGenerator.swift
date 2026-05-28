@@ -13,7 +13,10 @@ class RouteGenerator {
     }
 
     func generate(context: GenerationContext, entityName: String? = nil, repositoryName: String? = nil, controllerName: String? = nil) throws {
-        let resolvedEntityName = entityName ?? context.entity ?? context.name
+        let rawName = entityName ?? context.entity ?? context.name
+        let resolvedEntityName = rawName.hasSuffix("Routes")
+            ? String(rawName.dropLast("Routes".count))
+            : rawName
         let resolvedControllerName = controllerName ?? context.useCase ?? "\(resolvedEntityName)Controller"
         let fileName = "\(resolvedEntityName)Routes.swift"
 

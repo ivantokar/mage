@@ -26,6 +26,9 @@ struct Numen: ParsableCommand {
             TestCommand.self,
             AuthCommand.self,
             DocsCommand.self,
+            FluentModelCommand.self,
+            HTTPRequestCommand.self,
+            HTTPResponseCommand.self,
         ],
         defaultSubcommand: nil
     )

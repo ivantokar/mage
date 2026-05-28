@@ -2,11 +2,13 @@ import Fluent
 
 struct {{ name }}: AsyncMigration {
     func prepare(on database: Database) async throws {
-        let sample = {{ entityName }}Model()
-        try await sample.save(on: database)
+        // TODO: Seed {{ entityName }} sample data
+        // Example:
+        // let item = {{ entityName }}Model(/* fields */)
+        // try await item.save(on: database)
     }
 
     func revert(on database: Database) async throws {
-        try await {{ entityName }}Model.query(on: database).delete()
+        // TODO: Revert {{ entityName }} seed data
     }
 }
