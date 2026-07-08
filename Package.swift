@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "numen",
+    name: "mage",
     platforms: [.macOS(.v13)],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.3.0"),
@@ -13,7 +13,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "Numen",
+            name: "Mage",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "Stencil", package: "Stencil"),
@@ -21,15 +21,15 @@ let package = Package(
                 .product(name: "Prompt", package: "prompt"),
                 .product(name: "SwiftStencilKit", package: "swift-stencil-kit"),
             ],
-            path: "Sources/Numen",
+            path: "Sources/Mage",
             resources: [
                 .copy("Templates")
             ]
         ),
         .testTarget(
-            name: "NumenTests",
-            dependencies: ["Numen"],
-            path: "Tests/NumenTests"
+            name: "MageTests",
+            dependencies: ["Mage"],
+            path: "Tests/MageTests"
         ),
     ]
 )
