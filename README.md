@@ -2,6 +2,8 @@
   <img src="mage-banner.png" alt="Mage — Domain-Driven Design for Vapor" width="700">
 </p>
 
+> 🚧 **Under construction** — Mage is under active development. Expect breaking changes.
+
 # Mage
 
 Mage is a command-line tool for scaffolding [Vapor](https://vapor.codes) applications using a Clean Layered DDD (Domain-Driven Design) architecture. It generates the boilerplate — entities, value objects, use cases, repositories, controllers, migrations, and more — so you can focus on your domain logic instead of wiring.
