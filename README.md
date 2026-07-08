@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="mage-banner.png" alt="Mage — Domain Driven Development for Vapor" width="700">
+  <img src="mage-banner.png" alt="Mage — Domain-Driven Design for Vapor" width="700">
 </p>
 
 # Mage
@@ -74,7 +74,7 @@ Once inside a Mage-managed project, generate individual components:
 | `mage route <name>` | Generate a route collection |
 | `mage middleware <name>` | Generate a Vapor middleware |
 | `mage migration <name>` | Generate a Fluent migration |
-| `mage relationship` | Generate a relationship migration between two entities |
+| `mage relationship <source> <target>` | Generate a relationship migration between two entities |
 | `mage seeder <name>` | Generate a database seeder |
 | `mage fluent-model <name>` | Generate a Fluent persistence model in Infrastructure |
 | `mage http-request <name>` | Generate HTTP request types in Interface/HTTP/Requests |
