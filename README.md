@@ -20,7 +20,7 @@ brew install ivantokar/tap/mage
 mage --help
 ```
 
-`mage` also exists in Homebrew core as the Go Mage build tool. Use `ivantokar/tap/mage` to install this Swift Vapor scaffolding CLI.
+Use the fully qualified formula name. `mage` also exists in Homebrew core as the Go Mage build tool, so `brew install mage` installs a different CLI.
 
 If you already installed the Homebrew core formula by running `brew install mage`, remove it first:
 
@@ -28,6 +28,16 @@ If you already installed the Homebrew core formula by running `brew install mage
 brew uninstall mage
 brew install ivantokar/tap/mage
 ```
+
+If Homebrew says another `mage` executable is earlier in your `PATH`, remove or rename the old binary before using the Homebrew-installed one:
+
+```bash
+rm ~/.local/bin/mage
+hash -r
+mage --help
+```
+
+The Homebrew formula installs a prebuilt bottle on Apple Silicon. If you see an Xcode or Command Line Tools version warning on macOS beta releases, make sure you are installing `ivantokar/tap/mage`, not building from source.
 
 Build from source with Swift Package Manager:
 
