@@ -12,6 +12,23 @@ Mage is a command-line tool for scaffolding [Vapor](https://vapor.codes) applica
 
 ## ⚙️ Installation
 
+Install with Homebrew:
+
+```bash
+brew tap ivantokar/homebrew-tap
+brew install ivantokar/tap/mage
+mage --help
+```
+
+`mage` also exists in Homebrew core as the Go Mage build tool. Use `ivantokar/tap/mage` to install this Swift Vapor scaffolding CLI.
+
+If you already installed the Homebrew core formula by running `brew install mage`, remove it first:
+
+```bash
+brew uninstall mage
+brew install ivantokar/tap/mage
+```
+
 Build from source with Swift Package Manager:
 
 ```bash
