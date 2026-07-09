@@ -6,11 +6,13 @@
 
 # Mage
 
-Mage is a command-line tool for scaffolding [Vapor](https://vapor.codes) applications with a Clean Layered DDD architecture.
+Mage is a command-line tool for scaffolding [Vapor](https://vapor.codes) applications with a Clean Layered DDD architecture. It generates the repetitive code around entities, value objects, use cases, repositories, controllers, routes, migrations, tests, and related project structure so you can focus on domain behavior.
 
 Full documentation: [mage.ivantokar.com](https://mage.ivantokar.com)
 
-## Install From Source
+## Installation
+
+Build from source with Swift Package Manager:
 
 ```bash
 git clone git@github.com:ivantokar/mage.git
@@ -25,9 +27,103 @@ Verify the install:
 mage --help
 ```
 
-## Contributor Setup
+You can also run Mage directly from the checkout:
 
-Build and test locally with Swift Package Manager:
+```bash
+swift run Mage --help
+```
+
+## Getting Started
+
+Create a new Vapor project scaffolded with Mage's DDD layer structure:
+
+```bash
+mage new MyApp
+cd MyApp
+```
+
+Configure project metadata during creation:
+
+```bash
+mage new MyApp --interactive
+```
+
+Common project options include:
+
+```bash
+mage new MyApp \
+  --author "Your Name" \
+  --company "Your Company" \
+  --license MIT \
+  --database postgres \
+  --git
+```
+
+Inside a Mage-managed project, generate components:
+
+```bash
+mage entity User --fields "name:String,email:String,age:Int?"
+mage repository UserRepository --entity User
+mage migration CreateUser --entity User
+```
+
+Use `--dry-run` on supported generators to preview output before writing files:
+
+```bash
+mage feature Billing --dry-run
+```
+
+## Generated Architecture
+
+Mage-generated Vapor projects follow a layered DDD structure:
+
+```text
+Sources/App/
+├── Domain/           Entities, value objects, aggregate roots, domain events
+├── Application/      Use cases, DTOs, services
+├── Infrastructure/   Fluent models, repository implementations, migrations
+└── Interface/HTTP/   Controllers, routes, requests, responses, middleware
+```
+
+Project conventions are stored in `.magerc.yml`, generated with the project. It controls paths, naming conventions, database selection, and other generator defaults.
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `mage new <name>` | Create a new Mage-managed Vapor project |
+| `mage feature <name>` | Generate a complete DDD feature |
+| `mage entity <name>` | Generate a domain entity |
+| `mage value-object <name>` | Generate a value object |
+| `mage aggregate-root <name>` | Generate an aggregate root |
+| `mage domain-event <name>` | Generate a domain event |
+| `mage service <name>` | Generate a domain service |
+| `mage repository <name>` | Generate a repository protocol and Fluent implementation |
+| `mage use-case <name>` | Generate an application use case |
+| `mage dto <name>` | Generate a data transfer object |
+| `mage controller <name>` | Generate a Vapor route controller |
+| `mage route <name>` | Generate a route collection |
+| `mage middleware <name>` | Generate a Vapor middleware |
+| `mage migration <name>` | Generate a Fluent migration |
+| `mage relationship <source> <target>` | Generate a relationship migration between two entities |
+| `mage seeder <name>` | Generate a database seeder |
+| `mage fluent-model <name>` | Generate a Fluent persistence model |
+| `mage http-request <name>` | Generate HTTP request types |
+| `mage http-response <name>` | Generate HTTP response types |
+| `mage auth` | Generate JWT authentication scaffolding |
+| `mage test <name>` | Generate a test file for a component |
+| `mage docs` | Generate API documentation scaffolding inside a Mage-managed project |
+
+Run command-specific help for details:
+
+```bash
+mage help entity
+mage help feature
+```
+
+## Development
+
+Build and test locally:
 
 ```bash
 swift build
@@ -40,7 +136,7 @@ Run the CLI from source:
 swift run Mage --help
 ```
 
-## Repository Layout
+Repository layout:
 
 ```text
 Sources/Mage/
@@ -54,12 +150,12 @@ Sources/Mage/
 Tests/MageTests/    Unit tests
 ```
 
-## Notes For Contributors
+## Contributor Notes
 
 - Keep generated Vapor output deterministic.
-- Prefer focused tests around generator behavior and field parsing.
-- Update the published docs source in the `ivantokar.com` repository, not here.
+- Prefer focused tests around generator behavior, field parsing, and path/config handling.
 - Keep this repository focused on the Mage CLI and templates.
+- The published documentation source lives in the `ivantokar.com` repository, not here.
 
 ## License
 
