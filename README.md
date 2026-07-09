@@ -8,6 +8,8 @@
 
 Mage is a command-line tool for scaffolding [Vapor](https://vapor.codes) applications using a Clean Layered DDD (Domain-Driven Design) architecture. It generates the boilerplate — entities, value objects, use cases, repositories, controllers, migrations, and more — so you can focus on your domain logic instead of wiring.
 
+Full documentation: [mage.ivantokar.com](https://mage.ivantokar.com) *(pending first infra deploy — see [`cdk/README.md`](cdk/README.md))*
+
 ## Installation
 
 Build from source with Swift Package Manager:
@@ -100,6 +102,15 @@ mage migration CreateUser --entity User
 ```bash
 swift build
 swift test
+```
+
+## Documentation site
+
+The VitePress docs site lives in `docs/` and deploys to `mage.ivantokar.com` via AWS CDK (see [`cdk/README.md`](cdk/README.md) for infra setup). To run it locally:
+
+```bash
+npm install
+npm run docs:dev
 ```
 
 ## License

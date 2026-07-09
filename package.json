@@ -1,0 +1,17 @@
+{
+  "name": "mage-docs-site",
+  "version": "1.0.0",
+  "description": "Documentation site for the Mage CLI",
+  "private": true,
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "keywords": ["mage", "cli", "ddd", "vapor", "documentation"],
+  "author": "Ivan Tokar",
+  "license": "MIT",
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}

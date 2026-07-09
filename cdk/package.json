@@ -1,0 +1,27 @@
+{
+  "name": "mage-docs-cdk",
+  "version": "1.0.0",
+  "description": "AWS CDK Infrastructure for Mage CLI Documentation",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "synth": "cdk synth",
+    "deploy": "cdk deploy",
+    "diff": "cdk diff",
+    "destroy": "cdk destroy"
+  },
+  "keywords": ["aws-cdk", "infrastructure", "mage", "docs"],
+  "author": "Ivan Tokar",
+  "license": "MIT",
+  "dependencies": {
+    "aws-cdk-lib": "^2.248.0",
+    "constructs": "^10.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.2"
+  }
+}
