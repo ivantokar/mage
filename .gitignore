@@ -9,10 +9,3 @@ DerivedData/
 .netrc
 *.xcodeproj
 Package.resolved
-
-# Node / docs / CDK
-node_modules/
-cdk/node_modules/
-cdk/cdk.out/
-docs/.vitepress/cache/
-docs/.vitepress/dist/
