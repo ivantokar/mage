@@ -1,16 +1,16 @@
 <p align="center">
-  <img src="mage-banner.png" alt="Mage - Domain-Driven Design for Vapor" width="700">
+  <img src="mage-banner-v2.png" alt="Mage - Domain-Driven Design for Vapor" width="500">
 </p>
 
-> Under construction: Mage is under active development. Expect breaking changes.
+> 🚧 Under construction: Mage is under active development. Expect breaking changes.
 
 # Mage
 
 Mage is a command-line tool for scaffolding [Vapor](https://vapor.codes) applications with a Clean Layered DDD architecture. It generates the repetitive code around entities, value objects, use cases, repositories, controllers, routes, migrations, tests, and related project structure so you can focus on domain behavior.
 
-Full documentation: [mage.ivantokar.com](https://mage.ivantokar.com)
+📚 Full documentation: [mage.ivantokar.com](https://mage.ivantokar.com)
 
-## Installation
+## ⚙️ Installation
 
 Build from source with Swift Package Manager:
 
@@ -33,7 +33,7 @@ You can also run Mage directly from the checkout:
 swift run Mage --help
 ```
 
-## Getting Started
+## 🚀 Getting Started
 
 Create a new Vapor project scaffolded with Mage's DDD layer structure:
 
@@ -73,7 +73,7 @@ Use `--dry-run` on supported generators to preview output before writing files:
 mage feature Billing --dry-run
 ```
 
-## Generated Architecture
+## 🧱 Generated Architecture
 
 Mage-generated Vapor projects follow a layered DDD structure:
 
@@ -87,7 +87,7 @@ Sources/App/
 
 Project conventions are stored in `.magerc.yml`, generated with the project. It controls paths, naming conventions, database selection, and other generator defaults.
 
-## Commands
+## 🛠️ Commands
 
 | Command | Description |
 |---|---|
@@ -121,7 +121,7 @@ mage help entity
 mage help feature
 ```
 
-## Development
+## 🧑‍💻 Development
 
 Build and test locally:
 
@@ -150,13 +150,13 @@ Sources/Mage/
 Tests/MageTests/    Unit tests
 ```
 
-## Contributor Notes
+## 🤝 Contributor Notes
 
 - Keep generated Vapor output deterministic.
 - Prefer focused tests around generator behavior, field parsing, and path/config handling.
 - Keep this repository focused on the Mage CLI and templates.
 - The published documentation source lives in the `ivantokar.com` repository, not here.
 
-## License
+## 📄 License
 
 MIT
