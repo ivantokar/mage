@@ -60,7 +60,7 @@ import Testing
         var plan = GenerationPlan()
         plan.append(.createFile(path("a.txt"), contents: "theirs", ownership: .userOwned))
 
-        let error = try #require(throws: MageError.self) { try executor(fs).run(plan, mode: .apply) }
+        let error = try expectMageError { try executor(fs).run(plan, mode: .apply) }
         #expect(error.diagnostics.map(\.code) == [.conflictContentsDiffer])
         #expect(try fs.readString(at: path("a.txt")) == "mine")
     }
@@ -80,15 +80,15 @@ import Testing
         var plan = GenerationPlan()
         plan.append(.createFile(path("a.txt"), contents: "theirs", ownership: .userOwned))
 
-        let dry = try #require(throws: MageError.self) { try executor(fs).run(plan, mode: .dryRun) }
-        let real = try #require(throws: MageError.self) { try executor(fs).run(plan, mode: .apply) }
+        let dry = try expectMageError { try executor(fs).run(plan, mode: .dryRun) }
+        let real = try expectMageError { try executor(fs).run(plan, mode: .apply) }
         #expect(dry == real)
     }
 
     @Test func missingParentIsAConflict() throws {
         var plan = GenerationPlan()
         plan.append(.createFile(path("x/y.txt"), contents: "c", ownership: .userOwned))
-        let error = try #require(throws: MageError.self) { try executor(InMemoryFileSystem()).run(plan, mode: .apply) }
+        let error = try expectMageError { try executor(InMemoryFileSystem()).run(plan, mode: .apply) }
         #expect(error.diagnostics.map(\.code) == [.conflictMissingParent])
     }
 
@@ -100,7 +100,7 @@ import Testing
         plan.append(.createFile(path("c"), contents: "no header", ownership: .mageGenerated))
         plan.append(.replaceMageOwnedFile(path("d"), contents: "no header"))
 
-        let error = try #require(throws: MageError.self) { try executor(InMemoryFileSystem()).run(plan, mode: .dryRun) }
+        let error = try expectMageError { try executor(InMemoryFileSystem()).run(plan, mode: .dryRun) }
         #expect(error.diagnostics.map(\.code) == Array(repeating: .invalidOperation, count: 4))
     }
 
@@ -108,7 +108,7 @@ import Testing
         let fs = try InMemoryFileSystem(files: ["Sources": "i am a file"])
         var plan = GenerationPlan()
         plan.append(.createDirectory(path("Sources")))
-        let error = try #require(throws: MageError.self) { try executor(fs).run(plan, mode: .apply) }
+        let error = try expectMageError { try executor(fs).run(plan, mode: .apply) }
         #expect(error.diagnostics.map(\.code) == [.conflictWrongKind])
     }
 
@@ -129,7 +129,7 @@ import Testing
             GenerationOperation.replaceMageOwnedFile(path("g.swift"), contents: generated("new")),
             .removeMageOwnedFile(path("g.swift")),
         ] {
-            let error = try #require(throws: MageError.self) {
+            let error = try expectMageError {
                 try executor(fs).run(GenerationPlan(operations: [operation]), mode: .apply)
             }
             #expect(error.diagnostics.map(\.code) == [.conflictNotMageOwned])
@@ -171,13 +171,13 @@ import Testing
         let fs = try InMemoryFileSystem(files: ["routes.swift": "func routes() {}\n"])
         let hook = try IntegrationHook(id: "routes", body: "register()")
 
-        let noRegion = try #require(throws: MageError.self) {
+        let noRegion = try expectMageError {
             try executor(fs).run(GenerationPlan(operations: [.addManagedIntegrationHook(path("routes.swift"), hook: hook)]), mode: .apply)
         }
         #expect(noRegion.diagnostics.map(\.code) == [.conflictIntegrationRegionMissing])
         #expect(try fs.readString(at: path("routes.swift")) == "func routes() {}\n")
 
-        let noFile = try #require(throws: MageError.self) {
+        let noFile = try expectMageError {
             try executor(fs).run(GenerationPlan(operations: [.addManagedIntegrationHook(path("none.swift"), hook: hook)]), mode: .apply)
         }
         #expect(noFile.diagnostics.map(\.code) == [.conflictIntegrationFileMissing])
@@ -201,7 +201,7 @@ import Testing
         plan.append(.replaceMageOwnedFile(path("keep.swift"), contents: generated("new")))
         plan.append(.createFile(path("Sources/b.txt"), contents: "b", ownership: .userOwned))
 
-        let error = try #require(throws: MageError.self) { try executor(fs).run(plan, mode: .apply) }
+        let error = try expectMageError { try executor(fs).run(plan, mode: .apply) }
         #expect(error.diagnostics.map(\.code) == [.generationFailed])
         #expect(try snapshot(base) == before)
     }
@@ -214,7 +214,7 @@ import Testing
         plan.append(.createFile(path("a.txt"), contents: "a", ownership: .userOwned))
         plan.append(.createFile(path("b.txt"), contents: "b", ownership: .userOwned))
 
-        let error = try #require(throws: MageError.self) { try executor(fs).run(plan, mode: .apply) }
+        let error = try expectMageError { try executor(fs).run(plan, mode: .apply) }
         let diagnostic = try #require(error.diagnostics.first)
         #expect(diagnostic.message.contains("Rollback was incomplete"))
         #expect(diagnostic.suggestion?.contains("a.txt") == true)

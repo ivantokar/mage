@@ -1,5 +1,25 @@
 import Foundation
+import Testing
 @testable import MageCore
+
+struct ExpectedMageError: Error {}
+
+/// Runs `body`, which must throw a ``MageError``, and returns it.
+///
+/// `#require(throws:)` only returns the caught error on newer toolchains; the Swift 6.0
+/// baseline returns `Void`, so tests use this helper instead.
+func expectMageError<T>(sourceLocation: SourceLocation = #_sourceLocation, _ body: () throws -> T) throws -> MageError {
+    do {
+        _ = try body()
+    } catch let error as MageError {
+        return error
+    } catch {
+        Issue.record("Expected a MageError but got \(error)", sourceLocation: sourceLocation)
+        throw ExpectedMageError()
+    }
+    Issue.record("Expected a MageError but nothing was thrown", sourceLocation: sourceLocation)
+    throw ExpectedMageError()
+}
 
 func path(_ string: String) -> ProjectPath {
     try! ProjectPath(string)
