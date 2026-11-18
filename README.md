@@ -2,214 +2,40 @@
   <img src="mage-banner-v2.png" alt="Mage - Domain-Driven Design for Vapor" width="500">
 </p>
 
-> 🚧 Under construction: Mage is being rewritten ("vNext"). The commands documented below are the current prototype and will change or be removed.
+> 🚧 Under construction: this is the 1.0 rewrite branch. Mage has no usable commands yet.
 
 # Mage
 
 Mage is a project-aware development tool for initializing, generating, integrating, and validating Clean Layered DDD architecture inside **existing** server-side Swift projects. Generated applications remain normal framework applications and have no runtime dependency on Mage.
 
-Today Mage targets [Vapor](https://vapor.codes) (Fluent persistence). It generates the repetitive code around entities, value objects, use cases, repositories, controllers, routes, migrations, and tests so you can focus on domain behavior.
+## Status
 
-## 🗺️ Status and Roadmap
+The 1.0 rewrite is tracked in [#30](https://github.com/ivantokar/mage/issues/30), one issue per phase. Work happens on `release/1.0`; `main` still holds the prototype (`mage new`, `mage entity`, ...), which the rewrite does not preserve.
 
-The repository currently contains the prototype CLI. A clean rewrite is tracked in [#30](https://github.com/ivantokar/mage/issues/30), built around the architecture contracts defined in #17–#29:
+What exists today (Phase 0, [#31](https://github.com/ivantokar/mage/issues/31)):
 
-```text
-Existing Vapor project
-→ mage init            (non-destructive, adds Mage-owned architecture files)
-→ .magerc.yml          (architecture manifest)
-→ Clean Layered DDD structure
-→ mage doctor          (architecture validation)
-→ swift build
-→ swift test
-```
+- `mage --help` and `mage --version`, with the global options `--verbose`, `--quiet` and `--no-color`;
+- `MageCore`, a framework-independent library with structured diagnostics, a filesystem boundary, generation plans with ownership and conflict detection, adapter and architecture-profile primitives, and a renderer boundary.
 
-After that vertical slice is green, Domain, Application, Fluent persistence, Vapor HTTP, and deterministic Composition generation follow.
+`mage init`, `mage doctor` and every generator are **not implemented yet**.
 
-What this means for you:
-
-- `mage init` and `mage doctor` are **not implemented yet**.
-- `mage new` exists in the prototype but is **not part of the target product**. Framework tooling (for example the Vapor toolbox) should create the base project.
-- Compatibility with the prototype command set, `.magerc.yml` schema, and templates is not a goal of vNext.
-
-📚 Full documentation: [mage.ivantokar.com](https://mage.ivantokar.com)
-
-## ⚙️ Installation
-
-Install with Homebrew:
-
-```bash
-brew tap ivantokar/homebrew-tap
-brew install ivantokar/tap/mage
-mage --help
-```
-
-Use the fully qualified formula name. `mage` also exists in Homebrew core as the Go Mage build tool, so `brew install mage` installs a different CLI.
-
-If you already installed the Homebrew core formula by running `brew install mage`, remove it first:
-
-```bash
-brew uninstall mage
-brew install ivantokar/tap/mage
-```
-
-If Homebrew says another `mage` executable is earlier in your `PATH`, remove or rename the old binary before using the Homebrew-installed one:
-
-```bash
-rm ~/.local/bin/mage
-hash -r
-mage --help
-```
-
-The Homebrew formula installs a prebuilt bottle on Apple Silicon. If you see an Xcode or Command Line Tools version warning on macOS beta releases, make sure you are installing `ivantokar/tap/mage`, not building from source.
-
-Build from source with Swift Package Manager:
-
-```bash
-git clone git@github.com:ivantokar/mage.git
-cd mage
-swift build -c release
-cp .build/release/Mage /usr/local/bin/mage
-```
-
-Verify the install:
-
-```bash
-mage --help
-```
-
-You can also run Mage directly from the checkout:
-
-```bash
-swift run Mage --help
-```
-
-## 🚀 Getting Started (current prototype)
-
-Create a new Vapor project scaffolded with Mage's DDD layer structure (prototype only; see [Status and Roadmap](#️-status-and-roadmap)):
-
-```bash
-mage new MyApp
-cd MyApp
-```
-
-Configure project metadata during creation:
-
-```bash
-mage new MyApp --interactive
-```
-
-Common project options include:
-
-```bash
-mage new MyApp \
-  --author "Your Name" \
-  --company "Your Company" \
-  --license MIT \
-  --database postgres \
-  --git
-```
-
-Inside a Mage-managed project, generate components:
-
-```bash
-mage entity User --fields "name:String,email:String,age:Int?"
-mage repository UserRepository --entity User
-mage migration CreateUser --entity User
-```
-
-Use `--dry-run` on supported generators to preview output before writing files:
-
-```bash
-mage feature Billing --dry-run
-```
-
-## 🧱 Generated Architecture
-
-Mage-generated Vapor projects follow a layered DDD structure:
-
-```text
-Sources/App/
-├── Domain/           Entities, value objects, aggregate roots, domain events
-├── Application/      Use cases, DTOs, services
-├── Infrastructure/   Fluent models, repository implementations, migrations
-└── Interface/HTTP/   Controllers, routes, requests, responses, middleware
-```
-
-Project conventions are stored in `.magerc.yml`, generated with the project. It controls paths, naming conventions, database selection, and other generator defaults.
-
-## 🛠️ Commands (prototype)
-
-| Command | Description |
-|---|---|
-| `mage new <name>` | Create a new Mage-managed Vapor project |
-| `mage feature <name>` | Generate a complete DDD feature |
-| `mage entity <name>` | Generate a domain entity |
-| `mage value-object <name>` | Generate a value object |
-| `mage aggregate-root <name>` | Generate an aggregate root |
-| `mage domain-event <name>` | Generate a domain event |
-| `mage service <name>` | Generate a domain service |
-| `mage repository <name>` | Generate a repository protocol and Fluent implementation |
-| `mage use-case <name>` | Generate an application use case |
-| `mage dto <name>` | Generate a data transfer object |
-| `mage controller <name>` | Generate a Vapor route controller |
-| `mage route <name>` | Generate a route collection |
-| `mage middleware <name>` | Generate a Vapor middleware |
-| `mage migration <name>` | Generate a Fluent migration |
-| `mage relationship <source> <target>` | Generate a relationship migration between two entities |
-| `mage seeder <name>` | Generate a database seeder |
-| `mage fluent-model <name>` | Generate a Fluent persistence model |
-| `mage http-request <name>` | Generate HTTP request types |
-| `mage http-response <name>` | Generate HTTP response types |
-| `mage auth` | Generate JWT authentication scaffolding |
-| `mage test <name>` | Generate a test file for a component |
-| `mage docs` | Generate API documentation scaffolding inside a Mage-managed project |
-
-Run command-specific help for details:
-
-```bash
-mage help entity
-mage help feature
-```
-
-## 🧑‍💻 Development
-
-Build and test locally:
+## Development
 
 ```bash
 swift build
 swift test
+swift run mage --help
 ```
 
-Run the CLI from source:
-
-```bash
-swift run Mage --help
-```
-
-Repository layout:
+Requires Swift 6.0 or later. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ```text
-Sources/Mage/
-├── Commands/       CLI command definitions
-├── Generators/     Code generation logic
-├── Templates/      Stencil templates for generated Vapor code
-├── Models/         Shared generation models
-├── Core/           Config, file system, and template engine support
-└── Utils/          Naming and field parsing helpers
-
-Tests/MageTests/    Unit tests
+Sources/MageCore/   Framework-independent core (must not import Vapor, Fluent or any adapter)
+Sources/MageCLI/    Argument parsing and console output
+Sources/mage/       Executable entry point
+Tests/              Unit tests
 ```
 
-## 🤝 Contributor Notes
-
-- Work on new features should follow the vNext roadmap in [#30](https://github.com/ivantokar/mage/issues/30); the prototype code is reference material.
-- Local agent settings (`.claude/settings.local.json`) are git-ignored; do not commit machine-specific paths.
-- Keep generated Vapor output deterministic.
-- Prefer focused tests around generator behavior, field parsing, and path/config handling.
-- Keep this repository focused on the Mage CLI and templates.
-- The published documentation source lives in the `ivantokar.com` repository, not here.
-
-## 📄 License
+## License
 
 MIT

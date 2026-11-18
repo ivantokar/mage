@@ -1,0 +1,3 @@
+import MageCLI
+
+MageCommand.main()

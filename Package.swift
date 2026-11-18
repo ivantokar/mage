@@ -1,35 +1,35 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 import PackageDescription
 
 let package = Package(
     name: "mage",
     platforms: [.macOS(.v13)],
+    products: [
+        .executable(name: "mage", targets: ["mage"]),
+        .library(name: "MageCore", targets: ["MageCore"]),
+    ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.3.0"),
-        .package(url: "https://github.com/stencilproject/Stencil", from: "0.15.0"),
-        .package(url: "https://github.com/jpsim/Yams", from: "5.0.0"),
-        .package(url: "https://github.com/ivantokar/prompt.git", from: "1.0.0"),
-        .package(url: "https://github.com/ivantokar/swift-stencil-kit.git", from: "2.0.1"),
     ],
     targets: [
-        .executableTarget(
-            name: "Mage",
+        // Framework-independent core: project/architecture models, generation plans,
+        // filesystem and rendering boundaries, diagnostics. It must not import
+        // Vapor, Fluent or any other concrete adapter (enforced by a test).
+        .target(name: "MageCore"),
+
+        // CLI presentation layer: argument parsing and console output.
+        .target(
+            name: "MageCLI",
             dependencies: [
+                "MageCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                .product(name: "Stencil", package: "Stencil"),
-                .product(name: "Yams", package: "Yams"),
-                .product(name: "Prompt", package: "prompt"),
-                .product(name: "SwiftStencilKit", package: "swift-stencil-kit"),
-            ],
-            path: "Sources/Mage",
-            resources: [
-                .copy("Templates")
             ]
         ),
-        .testTarget(
-            name: "MageTests",
-            dependencies: ["Mage"],
-            path: "Tests/MageTests"
-        ),
+
+        // Thin executable entry point.
+        .executableTarget(name: "mage", dependencies: ["MageCLI"]),
+
+        .testTarget(name: "MageCoreTests", dependencies: ["MageCore"]),
+        .testTarget(name: "MageCLITests", dependencies: ["MageCLI", "MageCore"]),
     ]
 )
