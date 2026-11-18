@@ -2,11 +2,35 @@
   <img src="mage-banner-v2.png" alt="Mage - Domain-Driven Design for Vapor" width="500">
 </p>
 
-> 🚧 Under construction: Mage is under active development. Expect breaking changes.
+> 🚧 Under construction: Mage is being rewritten ("vNext"). The commands documented below are the current prototype and will change or be removed.
 
 # Mage
 
-Mage is a command-line tool for scaffolding [Vapor](https://vapor.codes) applications with a Clean Layered DDD architecture. It generates the repetitive code around entities, value objects, use cases, repositories, controllers, routes, migrations, tests, and related project structure so you can focus on domain behavior.
+Mage is a project-aware development tool for initializing, generating, integrating, and validating Clean Layered DDD architecture inside **existing** server-side Swift projects. Generated applications remain normal framework applications and have no runtime dependency on Mage.
+
+Today Mage targets [Vapor](https://vapor.codes) (Fluent persistence). It generates the repetitive code around entities, value objects, use cases, repositories, controllers, routes, migrations, and tests so you can focus on domain behavior.
+
+## 🗺️ Status and Roadmap
+
+The repository currently contains the prototype CLI. A clean rewrite is tracked in [#30](https://github.com/ivantokar/mage/issues/30), built around the architecture contracts defined in #17–#29:
+
+```text
+Existing Vapor project
+→ mage init            (non-destructive, adds Mage-owned architecture files)
+→ .magerc.yml          (architecture manifest)
+→ Clean Layered DDD structure
+→ mage doctor          (architecture validation)
+→ swift build
+→ swift test
+```
+
+After that vertical slice is green, Domain, Application, Fluent persistence, Vapor HTTP, and deterministic Composition generation follow.
+
+What this means for you:
+
+- `mage init` and `mage doctor` are **not implemented yet**.
+- `mage new` exists in the prototype but is **not part of the target product**. Framework tooling (for example the Vapor toolbox) should create the base project.
+- Compatibility with the prototype command set, `.magerc.yml` schema, and templates is not a goal of vNext.
 
 📚 Full documentation: [mage.ivantokar.com](https://mage.ivantokar.com)
 
@@ -60,9 +84,9 @@ You can also run Mage directly from the checkout:
 swift run Mage --help
 ```
 
-## 🚀 Getting Started
+## 🚀 Getting Started (current prototype)
 
-Create a new Vapor project scaffolded with Mage's DDD layer structure:
+Create a new Vapor project scaffolded with Mage's DDD layer structure (prototype only; see [Status and Roadmap](#️-status-and-roadmap)):
 
 ```bash
 mage new MyApp
@@ -114,7 +138,7 @@ Sources/App/
 
 Project conventions are stored in `.magerc.yml`, generated with the project. It controls paths, naming conventions, database selection, and other generator defaults.
 
-## 🛠️ Commands
+## 🛠️ Commands (prototype)
 
 | Command | Description |
 |---|---|
@@ -179,6 +203,8 @@ Tests/MageTests/    Unit tests
 
 ## 🤝 Contributor Notes
 
+- Work on new features should follow the vNext roadmap in [#30](https://github.com/ivantokar/mage/issues/30); the prototype code is reference material.
+- Local agent settings (`.claude/settings.local.json`) are git-ignored; do not commit machine-specific paths.
 - Keep generated Vapor output deterministic.
 - Prefer focused tests around generator behavior, field parsing, and path/config handling.
 - Keep this repository focused on the Mage CLI and templates.
