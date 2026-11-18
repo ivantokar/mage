@@ -1,9 +1,0 @@
-import Foundation
-
-protocol {{ name }}Protocol {
-    // Define service interface
-}
-
-struct {{ name }}: {{ name }}Protocol {
-    init() {}
-}

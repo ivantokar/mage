@@ -1,8 +1,0 @@
-import Foundation
-
-protocol {{ name }} {
-    func findById(_ id: UUID) async throws -> {{ entityName }}?
-    func findAll() async throws -> [{{ entityName }}]
-    func save(_ aggregate: {{ entityName }}) async throws
-    func delete(_ id: UUID) async throws
-}

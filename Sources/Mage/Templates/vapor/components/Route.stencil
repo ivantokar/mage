@@ -1,5 +1,0 @@
-import Vapor
-
-func register{{ entityName }}Routes(_ app: Application) throws {
-    try app.register(collection: {{ controllerName }}())
-}
