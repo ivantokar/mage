@@ -9,3 +9,6 @@ DerivedData/
 .netrc
 *.xcodeproj
 Package.resolved
+
+# Local agent settings
+.claude/settings.local.json
